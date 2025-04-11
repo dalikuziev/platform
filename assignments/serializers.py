@@ -26,7 +26,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         fields = '__all__'
-        read_only_fields = ('created', 'is_late')
+        read_only_fields = ('created',)
 
 class GradeSerializer(serializers.ModelSerializer):
     submission = SubmissionSerializer(read_only=True)

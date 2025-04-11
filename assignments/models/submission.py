@@ -23,9 +23,6 @@ class Submission(TimeStampedModel):
     file = models.FileField(upload_to='submissions/%Y/%m/%d/', verbose_name="Fayl")
     yechim = models.TextField(verbose_name="Yechim")
 
-    # submitted_at = models.DateTimeField(auto_now_add=True, verbose_name="Topshirilgan vaqt")
-    is_late = models.BooleanField(default=False, verbose_name="Kech qoldirilgan")
-
     class Meta:
         verbose_name = "Topshiriq topshirig'i"
         verbose_name_plural = "Topshiriq topshiriqlari"

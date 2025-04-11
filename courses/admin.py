@@ -1,15 +1,14 @@
 from django.contrib import admin
-from .models import Course, Lesson, LessonAttachment, WeekDay
+from .models import Course, Lesson, LessonAttachment, WeekDay, IndividualTask
 
 @admin.register(WeekDay)
 class WeekDayAdmin(admin.ModelAdmin):
     pass
 
-
 class LessonInline(admin.TabularInline):
     model = Lesson
     extra = 1
-    fields = ('title', 'order', 'is_free', 'created')
+    fields = ('title', 'created')
     readonly_fields = ('created',)
 
 @admin.register(Course)
@@ -34,8 +33,8 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course', 'order', 'is_free', 'created')
-    list_filter = ('course', 'is_free')
+    list_display = ('title', 'course', 'created')
+    list_filter = ('course',)
     search_fields = ('title', 'content', 'course__title')
     # ordering = ('course', 'order')
 
@@ -44,3 +43,10 @@ class LessonAttachmentAdmin(admin.ModelAdmin):
     list_display = ('title', 'lesson', 'created')
     list_filter = ('lesson__course',)
     search_fields = ('title', 'description', 'lesson__title')
+
+@admin.register(IndividualTask)
+class IndividualTaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'teacher', 'student', 'course', 'deadline')
+    list_filter = ('course', 'teacher')
+    search_fields = ('title', 'description', 'student__username')
+    readonly_fields = ('created', 'modified')

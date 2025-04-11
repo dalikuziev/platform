@@ -40,7 +40,7 @@ class SerializersTest(TestCase):
             content='Python haqida tushuncha',
             course=cls.course,
             duration=90,
-            order=1
+            # order=1
         )
         cls.attachment = LessonAttachment.objects.create(
             lesson=cls.lesson,
@@ -99,7 +99,7 @@ class SerializersTest(TestCase):
             'title': 'Yangi dars',
             'content': 'Yangi kontent',
             'duration': 60,
-            'order': 2
+            # 'order': 2
         }
         serializer = LessonSerializer(data=new_data, context={'request': request})
         self.assertTrue(serializer.is_valid())

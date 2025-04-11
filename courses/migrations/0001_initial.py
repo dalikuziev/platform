@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('content', models.TextField(verbose_name='Mazmuni')),
                 ('video_url', models.URLField(blank=True, null=True, verbose_name='Video havolasi')),
                 ('duration', models.PositiveIntegerField(default=0, help_text='Daqiqalarda', verbose_name='Davomiyligi')),
-                ('order', models.PositiveIntegerField(default=0, verbose_name='Tartib raqami')),
+                # ('order', models.PositiveIntegerField(default=0, verbose_name='Tartib raqami')),
                 ('is_free', models.BooleanField(default=False, verbose_name='Bepul')),
                 ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='lessons', to='courses.course', verbose_name='Kurs')),
             ],

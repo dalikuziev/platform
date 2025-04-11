@@ -4,7 +4,7 @@ from .models import Assignment, Submission, Grade
 class SubmissionInline(admin.TabularInline):
     model = Submission
     extra = 0
-    readonly_fields = ('created', 'is_late')
+    readonly_fields = ('created',)
     show_change_link = True
 
 class GradeInline(admin.StackedInline):
@@ -21,8 +21,8 @@ class AssignmentAdmin(admin.ModelAdmin):
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ('assignment', 'student', 'created', 'is_late')
-    list_filter = ('assignment__lesson__course', 'is_late')
+    list_display = ('assignment', 'student', 'created')
+    list_filter = ('assignment__lesson__course',)
     search_fields = ('student__username', 'assignment__title')
     inlines = [GradeInline]
 
