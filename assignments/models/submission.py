@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from accounts.models import User
 from courses.models import Course, Lesson
 from django_extensions.db.models import TimeStampedModel
-
 from .assignment import Assignment
 
 class Submission(TimeStampedModel):
