@@ -2,9 +2,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
-from .models import Course, Lesson, LessonAttachment
-from .serializers import CourseSerializer, LessonSerializer
+from .models import Course, Lesson, LessonAttachment, IndividualTask
+from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
 from .permissions import IsCourseTeacher, IsEnrolledStudent
 
 class CourseListCreateView(generics.ListCreateAPIView):
@@ -55,5 +54,30 @@ class EnrollCourseView(generics.CreateAPIView):
             status=status.HTTP_200_OK
         )
 
+class IndividualTaskListCreateView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'teacher':
+            return IndividualTask.objects.filter(teacher=user)
+        return IndividualTask.objects.filter(student=user)
 
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return IndividualTaskCreateSerializer
+        return IndividualTaskSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user)
+
+
+class IndividualTaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = IndividualTaskSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'teacher':
+            return IndividualTask.objects.filter(teacher=user)
+        return IndividualTask.objects.filter(student=user)
 

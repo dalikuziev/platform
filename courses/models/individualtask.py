@@ -4,13 +4,6 @@ from django_extensions.db.models import TimeStampedModel
 from ..models import Course, Lesson
 
 class IndividualTask(TimeStampedModel):
-    STATUS_CHOICES = (
-        ('assigned', 'Topshirilgan'),
-        ('in_progress', 'Bajarilmoqda'),
-        ('completed', 'Yakunlangan'),
-        ('rejected', 'Rad etilgan'),
-        ('accepted', 'Qabul qilingan'),
-    )
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -42,12 +35,6 @@ class IndividualTask(TimeStampedModel):
     title = models.CharField(max_length=255, verbose_name="Sarlavha")
     description = models.TextField(verbose_name="Tavsif")
     deadline = models.DateTimeField(verbose_name="Topshirish muddati")
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='assigned',
-        verbose_name="Holati"
-    )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -68,5 +55,4 @@ class IndividualTask(TimeStampedModel):
         # O'quvchi kursda ro'yxatdan o'tganligini tekshiramiz
         if not self.course.students.filter(id=self.student.id).exists():
             raise ValueError("O'quvchi kursda ro'yxatdan o'tmagan")
-
         super().save(*args, **kwargs)

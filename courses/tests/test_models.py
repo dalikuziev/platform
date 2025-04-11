@@ -71,7 +71,7 @@ class LessonAPITest(TestCase):
             title='Django Models',
             content='Model field types',
             course=self.course,
-            order=1
+            # order=1
         )
 
     def test_lesson_creation(self):
