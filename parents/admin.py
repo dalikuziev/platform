@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from shared.admin import BaseAdmin
 from .models import ParentProfile, StudentReport
 
 class StudentReportInline(admin.TabularInline):
@@ -8,7 +10,7 @@ class StudentReportInline(admin.TabularInline):
     fields = ('student', 'course', 'average_grade', 'is_published')
 
 @admin.register(ParentProfile)
-class ParentProfileAdmin(admin.ModelAdmin):
+class ParentProfileAdmin(BaseAdmin):
     list_display = ('user', 'phone', 'children_list')
     search_fields = ('user__username', 'phone')
     filter_horizontal = ('children',)
@@ -19,7 +21,7 @@ class ParentProfileAdmin(admin.ModelAdmin):
     children_list.short_description = "Farzandlar"
 
 @admin.register(StudentReport)
-class StudentReportAdmin(admin.ModelAdmin):
+class StudentReportAdmin(BaseAdmin):
     list_display = ('student', 'course', 'average_grade', 'is_published')
     list_filter = ('course', 'is_published')
     search_fields = ('student__username', 'course__title')

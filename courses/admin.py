@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from shared.admin import BaseAdmin
 from .models import Course, Lesson, LessonAttachment, WeekDay
 
 @admin.register(WeekDay)
@@ -13,7 +15,7 @@ class LessonInline(admin.TabularInline):
     readonly_fields = ('created',)
 
 @admin.register(Course)
-class CourseAdmin(admin.ModelAdmin):
+class CourseAdmin(BaseAdmin):
     list_display = ('title', 'teacher', 'start_date', 'end_date', 'student_count', 'is_active')
     list_filter = ('is_active', 'start_date', 'teacher')
     search_fields = ('title', 'description', 'teacher__username')
@@ -33,14 +35,14 @@ class CourseAdmin(admin.ModelAdmin):
         queryset.update(is_active=False)
 
 @admin.register(Lesson)
-class LessonAdmin(admin.ModelAdmin):
+class LessonAdmin(BaseAdmin):
     list_display = ('title', 'course', 'order', 'is_free', 'created')
     list_filter = ('course', 'is_free')
     search_fields = ('title', 'content', 'course__title')
     # ordering = ('course', 'order')
 
 @admin.register(LessonAttachment)
-class LessonAttachmentAdmin(admin.ModelAdmin):
+class LessonAttachmentAdmin(BaseAdmin):
     list_display = ('title', 'lesson', 'created')
     list_filter = ('lesson__course',)
     search_fields = ('title', 'description', 'lesson__title')

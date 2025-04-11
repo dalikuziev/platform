@@ -8,3 +8,5 @@ django-colorfield
 python-dotenv
 django-extensions
 django-jazzmin
+icecream
+pillow
