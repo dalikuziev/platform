@@ -10,3 +10,11 @@ django-extensions
 django-jazzmin
 icecream
 pillow
+djangorestframework-simplejwt
+uvicorn
+drf-material
+drf-nested-routers
+drf-spectacular
+drf-spectacular-sidecar
+django-cors-headers
+environs
