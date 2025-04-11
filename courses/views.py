@@ -55,6 +55,5 @@ class EnrollCourseView(generics.CreateAPIView):
             status=status.HTTP_200_OK
         )
 
-# class EnrollView(APIView):
-#     permission_classes = [IsAuthenticated]
+
 
