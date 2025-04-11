@@ -1,0 +1,10 @@
+django-import-export
+django
+djangorestframework
+psycopg2-binary
+django-admin-interface
+django-import-export
+django-colorfield
+python-dotenv
+django-extensions
+django-jazzmin
