@@ -13,9 +13,9 @@ drf-nested-routers
 drf-spectacular
 drf-spectacular-sidecar
 environs
+git-filter-repo
 icecream
 pillow
 psycopg2-binary
 python-dotenv
 uvicorn
-git-filter-repo
