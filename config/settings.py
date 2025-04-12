@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import timedelta
-from .config import ALLOWED_HOSTS, SECRET_KEY, DEBUG, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS
+from .config import ALLOWED_HOSTS, SECRET_KEY, DEBUG, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -197,4 +197,10 @@ SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
 }
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
