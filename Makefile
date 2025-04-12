@@ -13,7 +13,7 @@ mig:
 cru:
 	python manage.py createsuperuser --username=admin --email=admin@gmail.com
 run-asgi:
-	uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload
+	uvicorn config.asgi:application --host 0.0.0.0 --port 1298 --reload
 clear:
 	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete
 no-db:
@@ -22,8 +22,8 @@ re-django:
 	pip3 uninstall Django -y && pip3 install Django
 re-mig:
 	make no-db && make clear && make re-django && make mig && make cru && make run
-run:
-	python3 manage.py runserver 0.0.0.0:8000
+run-wsgi:
+	python3 manage.py runserver 0.0.0.0:1298
 startapp:
 	python manage.py startapp $(name) && mv $(name) apps/$(name)
 clear-linux:
@@ -35,6 +35,6 @@ clear-windows:
 	# .pyc fayllarni o'chiradi
 	Get-ChildItem -Recurse -File -Path "*/migrations/*.pyc" | Remove-Item -Force
 tunnel:
-	jprq http 8000 -s platform
+	jprq http 1298 -s platform
 collect:
 	python manage.py collectstatic --noinput

@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import timedelta
-from .config import ALLOWED_HOSTS, SECRET_KEY, DEBUG, CSRF_TRUSTED_ORIGINS
+from .config import ALLOWED_HOSTS, SECRET_KEY, DEBUG, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +15,9 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEBUG
 ALLOWED_HOSTS = ALLOWED_HOSTS
+INTERNAL_IPS = ALLOWED_HOSTS
 CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS
+CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 # Application definition
 
@@ -28,29 +30,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+THIRD_APPS = [
     'drf_material',
     'drf_spectacular',
     'drf_spectacular_sidecar',
     "corsheaders",
-    # global apps
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'colorfield',
     'import_export',
     'django_extensions',
-    # 'rest_framework.authtoken',
-    # 'admin_interface',
-    # my apps
+]
+
+LOCAL_APPS = [
     'accounts',
     'courses',
     'assignments',
     'parents',
 ]
 
+INSTALLED_APPS += LOCAL_APPS
+INSTALLED_APPS += THIRD_APPS
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,6 +84,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = "config.asgi.application"
 
 
 # Database
@@ -123,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
@@ -144,14 +153,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# JWT sozlash
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=45),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
@@ -160,4 +161,40 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',  # Needed for file uploads
+    ),
+    'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Edu Platform API',
+    'DESCRIPTION': 'CRM for education centers',
+    'VERSION': '0.0.1',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+}
 
