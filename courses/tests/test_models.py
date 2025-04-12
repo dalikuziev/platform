@@ -71,7 +71,7 @@ class LessonAPITest(TestCase):
             title='Django Models',
             content='Model field types',
             course=self.course,
-            order=1
+            # order=1
         )
 
     def test_lesson_creation(self):
@@ -186,4 +186,3 @@ class LessonAttachmentAPITests(TestCase):
         self.assertFalse(os.path.exists(file_path))
         with self.assertRaises(LessonAttachment.DoesNotExist):
             LessonAttachment.objects.get(id=attachment_id)
-

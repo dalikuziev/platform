@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from accounts.models import User
 from courses.models import Course, Lesson
 from django_extensions.db.models import TimeStampedModel
-
 from .assignment import Assignment
 
 class Submission(TimeStampedModel):
@@ -22,9 +21,6 @@ class Submission(TimeStampedModel):
     )
     file = models.FileField(upload_to='submissions/%Y/%m/%d/', verbose_name="Fayl")
     yechim = models.TextField(verbose_name="Yechim")
-
-    # submitted_at = models.DateTimeField(auto_now_add=True, verbose_name="Topshirilgan vaqt")
-    is_late = models.BooleanField(default=False, verbose_name="Kech qoldirilgan")
 
     class Meta:
         verbose_name = "Topshiriq topshirig'i"
