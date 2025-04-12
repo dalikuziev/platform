@@ -15,7 +15,7 @@ class LessonSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = [
             'id', 'title', 'content', 'video_url',
-            'is_free', 'created', 'attachments',
+            'created', 'attachments',
         ]
         read_only_fields = ['created']
 
@@ -58,7 +58,7 @@ class IndividualTaskSerializer(serializers.ModelSerializer):
         model = IndividualTask
         fields = [
             'id', 'course', 'lesson', 'teacher', 'student',
-            'title', 'description', 'deadline', 'status',
+            'title', 'description', 'deadline',
             'created', 'modified'
         ]
         read_only_fields = ['teacher', 'created', 'modified']

@@ -18,7 +18,6 @@ class ParentProfile(TimeStampedModel):
         verbose_name="Farzandlar"
     )
     phone = models.CharField(max_length=20, verbose_name="Telefon raqami")
-    # created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Ota-ona profili"

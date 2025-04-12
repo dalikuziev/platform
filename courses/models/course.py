@@ -54,8 +54,6 @@ class Course(TimeStampedModel):
     )
     end_date = models.DateField(verbose_name="Tugash sanasi", null=True, blank=True)
     is_active = models.BooleanField(default=True, verbose_name="Faol")
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Kurs"

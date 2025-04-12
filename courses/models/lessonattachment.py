@@ -15,7 +15,6 @@ class LessonAttachment(TimeStampedModel):
     file = models.FileField(upload_to='lesson_attachments/', verbose_name="Fayl")
     title = models.CharField(max_length=200, verbose_name="Sarlavha")
     description = models.TextField(blank=True, verbose_name="Tavsif")
-    # created_at = models.DateTimeField(auto_now_add=True)
 
     def delete(self, *args, **kwargs):
         # faylni o'chiramiz
