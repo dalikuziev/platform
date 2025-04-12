@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    container_name: drf_api
+    ports:
+      - "1298:1298"
+    env_file:
+      - ./config/.env
+    volumes:
+      - .:/usr/src/app
+    restart: always
+    user: root

@@ -9,7 +9,7 @@ migration:
 migrate:
 	python3 manage.py migrate
 mig:
-	make makemigration && make migrate
+	make migration && make migrate
 cru:
 	python manage.py createsuperuser --username=admin --email=admin@gmail.com
 run-asgi:
