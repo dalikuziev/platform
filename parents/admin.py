@@ -1,4 +1,6 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+from import_export.resources import  ModelResource
 
 from shared.admin import BaseAdmin
 from .models import ParentProfile, StudentReport
@@ -9,8 +11,14 @@ class StudentReportInline(admin.TabularInline):
     readonly_fields = ('created',)
     fields = ('student', 'course', 'average_grade', 'is_published')
 
+class ParentProfileResource(ModelResource):
+    class Meta:
+        model = ParentProfile
+
 @admin.register(ParentProfile)
-class ParentProfileAdmin(BaseAdmin):
+class ParentProfileAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [ParentProfileResource]
+
     list_display = ('user', 'phone', 'children_list')
     search_fields = ('user__username', 'phone')
     filter_horizontal = ('children',)
@@ -20,8 +28,14 @@ class ParentProfileAdmin(BaseAdmin):
 
     children_list.short_description = "Farzandlar"
 
+class StudentReportResource(ModelResource):
+    class Meta:
+        model = StudentReport
+
 @admin.register(StudentReport)
-class StudentReportAdmin(BaseAdmin):
+class StudentReportAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [StudentReportResource]
+
     list_display = ('student', 'course', 'average_grade', 'is_published')
     list_filter = ('course', 'is_published')
     search_fields = ('student__username', 'course__title')

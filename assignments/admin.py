@@ -1,6 +1,8 @@
 from django.contrib import admin
 
 from shared.admin import BaseAdmin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from .models import Assignment, Submission, Grade
 
 
@@ -16,25 +18,40 @@ class GradeInline(admin.StackedInline):
     extra = 0
     readonly_fields = ('created',)
 
+class AssignmentResource(resources.ModelResource):
+    class Meta:
+        model = Assignment
+
 
 @admin.register(Assignment)
-class AssignmentAdmin(BaseAdmin):
+class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [AssignmentResource]
     list_display = ('title', 'lesson', 'deadline', 'max_score')
     list_filter = ('lesson__course',)
     search_fields = ('title', 'lesson__title')
     inlines = [SubmissionInline]
 
+class SubmissionResource(resources.ModelResource):
+    class Meta:
+        model = Submission
+
 
 @admin.register(Submission)
-class SubmissionAdmin(BaseAdmin):
+class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [SubmissionResource]
     list_display = ('assignment', 'student', 'created')
     list_filter = ('assignment__lesson__course',)
     search_fields = ('student__username', 'assignment__title')
     inlines = [GradeInline]
 
+class GradeResource(resources.ModelResource):
+    class Meta:
+        model = Grade
+
 
 @admin.register(Grade)
-class GradeAdmin(BaseAdmin):
+class GradeAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [GradeResource]
     list_display = ('submission', 'score', 'graded_by', 'created')
     list_filter = ('graded_by', 'submission__assignment__lesson__course')
     search_fields = ('submission__student__username', 'feedback')
