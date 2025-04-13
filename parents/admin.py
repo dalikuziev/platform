@@ -15,8 +15,7 @@ class ParentProfileAdmin(admin.ModelAdmin):
 
     def children_list(self, obj):
         return ", ".join([child.username for child in obj.children.all()])
-
-    children_list.short_description = "Farzandlar"
+    children_list.short_description = "Children"
 
 @admin.register(StudentReport)
 class StudentReportAdmin(admin.ModelAdmin):

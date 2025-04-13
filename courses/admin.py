@@ -21,7 +21,7 @@ class CourseAdmin(admin.ModelAdmin):
 
     def student_count(self, obj):
         return obj.students.count()
-    student_count.short_description = "O'quvchilar soni"
+    student_count.short_description = "Students"
 
     @admin.action(description="Tanlangan kurslarni faollashtirish")
     def activate_courses(self, request, queryset):
