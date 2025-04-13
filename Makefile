@@ -35,6 +35,6 @@ clear-windows:
 	# .pyc fayllarni o'chiradi
 	Get-ChildItem -Recurse -File -Path "*/migrations/*.pyc" | Remove-Item -Force
 tunnel:
-	jprq http 1298 -s platform
+	jprq http 7 -s platform
 collect:
 	python manage.py collectstatic --noinput

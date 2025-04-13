@@ -1,10 +1,18 @@
 from django.contrib import admin
 from shared.admin import BaseAdmin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from .models import Course, Lesson, LessonAttachment, WeekDay, IndividualTask
 
+class WeekDayResource(resources.ModelResource):
+    class Meta:
+        model = WeekDay
+
+
 @admin.register(WeekDay)
-class WeekDayAdmin(BaseAdmin):
-    pass
+class WeekDayAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [WeekDayResource]
+
 
 class LessonInline(admin.TabularInline):
     model = Lesson
