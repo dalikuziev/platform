@@ -17,4 +17,8 @@ urlpatterns = [
     path('individual-tasks/', IndividualTaskListCreateView.as_view(), name='individual-task-list'),
     path('individual-tasks/<int:pk>/', IndividualTaskRetrieveUpdateDestroyView.as_view(),
          name='individual-task-detail'),
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> diyorbek/april/11-1

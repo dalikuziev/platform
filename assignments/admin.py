@@ -26,7 +26,11 @@ class AssignmentAdmin(BaseAdmin):
 
 
 @admin.register(Submission)
+<<<<<<< HEAD
 class SubmissionAdmin(BaseAdmin):
+=======
+class SubmissionAdmin(admin.ModelAdmin):
+>>>>>>> diyorbek/april/11-1
     list_display = ('assignment', 'student', 'created')
     list_filter = ('assignment__lesson__course',)
     search_fields = ('student__username', 'assignment__title')

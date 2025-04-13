@@ -22,4 +22,9 @@ class Lesson(TimeStampedModel):
         unique_together = ('course', 'order')
 
     def __str__(self):
+<<<<<<< HEAD
         return f"{self.course.title} - {self.title}"
+=======
+        return f"{self.course.title} - {self.title}"
+#
+>>>>>>> diyorbek/april/11-1

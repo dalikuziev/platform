@@ -1,4 +1,5 @@
 from django.contrib import admin
+<<<<<<< HEAD
 from shared.admin import BaseAdmin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -8,11 +9,13 @@ class WeekDayResource(resources.ModelResource):
     class Meta:
         model = WeekDay
 
+=======
+from .models import Course, Lesson, LessonAttachment, WeekDay, IndividualTask
+>>>>>>> diyorbek/april/11-1
 
 @admin.register(WeekDay)
 class WeekDayAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [WeekDayResource]
-
 
 class LessonInline(admin.TabularInline):
     model = Lesson
@@ -41,7 +44,11 @@ class CourseAdmin(BaseAdmin):
         queryset.update(is_active=False)
 
 @admin.register(Lesson)
+<<<<<<< HEAD
 class LessonAdmin(BaseAdmin):
+=======
+class LessonAdmin(admin.ModelAdmin):
+>>>>>>> diyorbek/april/11-1
     list_display = ('title', 'course', 'created')
     list_filter = ('course',)
     search_fields = ('title', 'content', 'course__title')
@@ -54,8 +61,16 @@ class LessonAttachmentAdmin(BaseAdmin):
     search_fields = ('title', 'description', 'lesson__title')
 
 @admin.register(IndividualTask)
+<<<<<<< HEAD
 class IndividualTaskAdmin(BaseAdmin):
     list_display = ('title', 'teacher', 'student', 'course', 'deadline')
     list_filter = ('course', 'teacher')
     search_fields = ('title', 'description', 'student__username')
     readonly_fields = ('created', 'modified')
+=======
+class IndividualTaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'teacher', 'student', 'course', 'deadline')
+    list_filter = ('course', 'teacher')
+    search_fields = ('title', 'description', 'student__username')
+    readonly_fields = ('created', 'modified')
+>>>>>>> diyorbek/april/11-1

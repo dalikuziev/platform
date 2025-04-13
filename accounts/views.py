@@ -48,4 +48,8 @@ class LogoutView(APIView):
             return Response(
                 {"detail": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
+<<<<<<< HEAD
             )
+=======
+            )
+>>>>>>> diyorbek/april/11-1

@@ -61,6 +61,28 @@ class IndividualTaskListCreateView(generics.ListCreateAPIView):
         if user.role == 'teacher':
             return IndividualTask.objects.filter(teacher=user)
         return IndividualTask.objects.filter(student=user)
+<<<<<<< HEAD
+=======
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return IndividualTaskCreateSerializer
+        return IndividualTaskSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user)
+
+
+class IndividualTaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = IndividualTaskSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'teacher':
+            return IndividualTask.objects.filter(teacher=user)
+        return IndividualTask.objects.filter(student=user)
+>>>>>>> diyorbek/april/11-1
 
     def get_serializer_class(self):
         if self.request.method == 'POST':

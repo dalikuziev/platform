@@ -55,4 +55,8 @@ class IndividualTask(TimeStampedModel):
         # O'quvchi kursda ro'yxatdan o'tganligini tekshiramiz
         if not self.course.students.filter(id=self.student.id).exists():
             raise ValueError("O'quvchi kursda ro'yxatdan o'tmagan")
+<<<<<<< HEAD
         super().save(*args, **kwargs)
+=======
+        super().save(*args, **kwargs)
+>>>>>>> diyorbek/april/11-1
