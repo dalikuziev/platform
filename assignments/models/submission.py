@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 from accounts.models import User
 from courses.models import Course, Lesson
 from django_extensions.db.models import TimeStampedModel
@@ -9,23 +8,19 @@ class Submission(TimeStampedModel):
     assignment = models.ForeignKey(
         Assignment,
         on_delete=models.CASCADE,
-        related_name='submissions',
-        verbose_name="Topshiriq"
+        related_name='submissions'
     )
     student = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         limit_choices_to={'role': 'student'},
-        related_name='submissions',
-        verbose_name="O'quvchi"
+        related_name='submissions'
     )
-    file = models.FileField(upload_to='submissions/%Y/%m/%d/', verbose_name="Fayl")
-    yechim = models.TextField(verbose_name="Yechim")
+    file = models.FileField(upload_to='submissions/%Y/%m/%d/')
+    answer = models.TextField()
 
     class Meta:
-        verbose_name = "Topshiriq topshirig'i"
-        verbose_name_plural = "Topshiriq topshiriqlari"
-        unique_together = ('assignment', 'student')
+        unique_together = ('assignment', 'student',)
 
     def save(self, *args, **kwargs):
         if None in (self.created, self.assignment.deadline):

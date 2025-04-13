@@ -5,7 +5,7 @@ class StudentReportInline(admin.TabularInline):
     model = StudentReport
     extra = 0
     readonly_fields = ('created',)
-    fields = ('student', 'course', 'average_grade', 'is_published')
+    fields = ('student', 'course', 'is_published')
 
 @admin.register(ParentProfile)
 class ParentProfileAdmin(admin.ModelAdmin):
@@ -20,7 +20,7 @@ class ParentProfileAdmin(admin.ModelAdmin):
 
 @admin.register(StudentReport)
 class StudentReportAdmin(admin.ModelAdmin):
-    list_display = ('student', 'course', 'average_grade', 'is_published')
+    list_display = ('student', 'course', 'attendance_percentage', 'is_published')
     list_filter = ('course', 'is_published')
     search_fields = ('student__username', 'course__title')
     readonly_fields = ('created',)

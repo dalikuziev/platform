@@ -3,9 +3,9 @@ from django.db import models
 
 class User(AbstractUser):
     ROLES = (
-        ('teacher', 'O\'qituvchi'),
-        ('student', 'O\'quvchi'),
-        ('parents', 'Ota-ona'),
+        ('teacher', 'Teacher'),
+        ('student', 'Student'),
+        ('parents', 'Parents'),
         ('admin', 'Admin'),
     )
     role = models.CharField(max_length=20, choices=ROLES, default='student')

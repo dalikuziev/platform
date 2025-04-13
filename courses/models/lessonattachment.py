@@ -10,11 +10,10 @@ class LessonAttachment(TimeStampedModel):
         Lesson,
         on_delete=models.CASCADE,
         related_name='attachments',
-        verbose_name="Dars"
     )
-    file = models.FileField(upload_to='lesson_attachments/', verbose_name="Fayl")
-    title = models.CharField(max_length=200, verbose_name="Sarlavha")
-    description = models.TextField(blank=True, verbose_name="Tavsif")
+    file = models.FileField(upload_to='lesson_attachments/')
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
 
     def delete(self, *args, **kwargs):
         # faylni o'chiramiz
@@ -23,10 +22,6 @@ class LessonAttachment(TimeStampedModel):
                 os.remove(self.file.path)
         # modelni o'chiramiz
         super().delete(*args, **kwargs)
-
-    class Meta:
-        verbose_name = "Dars materiali"
-        verbose_name_plural = "Dars materiallari"
 
     def __str__(self):
         return self.title

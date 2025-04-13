@@ -7,14 +7,12 @@ class IndividualTask(TimeStampedModel):
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
-        related_name='individual_tasks',
-        verbose_name="Kurs"
+        related_name='individual_tasks'
     )
     lesson = models.ForeignKey(
         Lesson,
         on_delete=models.CASCADE,
         related_name='individual_tasks',
-        verbose_name="Dars",
         null=True,
         blank=True
     )
@@ -23,30 +21,24 @@ class IndividualTask(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name='assigned_tasks',
         limit_choices_to={'role': 'teacher'},
-        verbose_name="O'qituvchi"
     )
     student = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='individual_tasks',
         limit_choices_to={'role': 'student'},
-        verbose_name="O'quvchi"
     )
-    title = models.CharField(max_length=255, verbose_name="Sarlavha")
-    description = models.TextField(verbose_name="Tavsif")
-    deadline = models.DateTimeField(verbose_name="Topshirish muddati")
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    deadline = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Individual topshiriq"
-        verbose_name_plural = "Individual topshiriqlar"
         ordering = ['-created']
         unique_together = ['course', 'student', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
-
     def __str__(self):
         return f"{self.title} - {self.student.username}"
-
     def save(self, *args, **kwargs):
         # O'qituvchi kursning o'qituvchisi ekanligini tekshiramiz
         if self.teacher != self.course.teacher:

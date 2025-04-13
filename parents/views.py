@@ -64,16 +64,16 @@ class GenerateReportView(APIView):
 
         # O'rtacha bahoni hisoblaymiz
         from django.db.models import Avg
-        average_grade = Grade.objects.filter(
-            submission__assignment__lesson__course=course,
-            submission__student=student
-        ).aggregate(avg=Avg('score'))['avg'] or 0
+        # average_grade = Grade.objects.filter(
+        #     submission__assignment__lesson__course=course,
+        #     submission__student=student
+        # ).aggregate(avg=Avg('score'))['avg'] or 0
 
         report = StudentReport.objects.create(
             student=student,
             course=course,
-            attendance_percentage=85.5,  # Demo qiymat
-            average_grade=average_grade,
+            # attendance_percentage=85.5,  # Demo qiymat
+            # average_grade=average_grade,
             completed_assignments=completed_assignments,
             total_assignments=total_assignments,
             teacher_comments="Yaxshi ishlagan!",

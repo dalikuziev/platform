@@ -9,21 +9,17 @@ class Assignment(TimeStampedModel):
     lesson = models.ForeignKey(
         Lesson,
         on_delete=models.CASCADE,
-        related_name='assignments',
-        verbose_name="Dars"
+        related_name='assignments'
     )
-    title = models.CharField(max_length=200, verbose_name="Sarlavha")
-    description = models.TextField(verbose_name="Tavsif")
-    deadline = models.DateTimeField(verbose_name="Topshirish muddati")
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    deadline = models.DateTimeField()
     max_score = models.PositiveIntegerField(
         default=100,
-        validators=[MinValueValidator(1), MaxValueValidator(100)],
-        verbose_name="Maksimal ball"
+        validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
 
     class Meta:
-        verbose_name = "Topshiriq"
-        verbose_name_plural = "Topshiriqlar"
         ordering = ['deadline']
 
     def __str__(self):
