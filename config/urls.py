@@ -3,7 +3,8 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
-from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT, ADMIN_URL
+from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT
+from config.config import ADMIN_URL
 
 urlpatterns = [
     path(ADMIN_URL, admin.site.urls),
