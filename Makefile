@@ -35,3 +35,6 @@ tunnel:
 	jprq http 7 -s platform
 collect:
 	python manage.py collectstatic --noinput
+open-bash:
+    docker exec -it drf_api bash
+

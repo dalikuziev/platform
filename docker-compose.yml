@@ -9,5 +9,7 @@ services:
       - ./config/.env
     volumes:
       - .:/usr/src/app
+      - ./usr/src/app/static:/usr/src/app/static
+      - ./usr/src/app/media:/usr/src/app/media
     restart: always
     user: root
