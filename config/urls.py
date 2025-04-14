@@ -3,10 +3,10 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
-from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT
+from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT, ADMIN_URL
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(ADMIN_URL, admin.site.urls),
     path('api/auth/', include('accounts.urls')),
     path('api/courses/', include('courses.urls')),
     path('api/assignments/', include('assignments.urls')),

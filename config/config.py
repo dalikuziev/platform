@@ -1,6 +1,7 @@
 import os
 from environs import Env
 
+
 env = Env()
 
 # Construct the full absolute path to the .env file (parent of config)
@@ -19,6 +20,7 @@ env.read_env(env_file_path)
 # Use environment variables
 SECRET_KEY = env.str('SECRET_KEY')
 DEBUG = env.bool('DEBUG')
+ADMIN_URL = env.str('ADMIN_URL', default='admin/')
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
