@@ -12,7 +12,6 @@ echo ""
 echo "========== Starting Tunnels =========="
 
 # Start jprq tunnel
-JPRQ_URL=""
 if [ -n "$JPRQ_AUTH_KEY" ]; then
   echo "Authenticating jprq..."
   jprq auth "$JPRQ_AUTH_KEY"
