@@ -17,7 +17,7 @@ if [ -n "$JPRQ_AUTH_KEY" ]; then
   echo "Authenticating jprq..."
   jprq auth "$JPRQ_AUTH_KEY"
   echo "Starting jprq tunnel on port 1298..."
-  jprq http 1298 -s local > jprq.log 2>&1 &
+  jprq http 1298 -s "$JPRQ_URL" > jprq.log 2>&1 &
   sleep 2
   JPRQ_URL=$(grep -o 'https://[a-zA-Z0-9.-]*\.jprq\.site' jprq.log | head -n1)
 fi
