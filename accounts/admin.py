@@ -1,9 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
+from shared.admin import BaseAdmin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from .models import User
 
-class CustomUserAdmin(UserAdmin):
+class UserResource(resources.ModelResource):
+    class Meta:
+        model = User
+
+
+class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
+    resource_classes = [UserResource]
     # Ro'yxat ko'rinishi
     list_display = ('username', 'first_name', 'last_name', 'email', 'role')
     list_filter = ('role', 'is_staff', 'is_active')
