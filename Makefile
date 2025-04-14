@@ -29,12 +29,11 @@ startapp:
 clear-linux:
 	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete
 clear-windows:
-    Get-ChildItem -Path "*\migrations\0*.py" | Remove-Item -Force
-    Get-ChildItem -Path "*\migrations\*.pyc" | Remove-Item -Force
+	Get-ChildItem -Path "*\migrations\0*.py" | Remove-Item -Force
+	Get-ChildItem -Path "*\migrations\*.pyc" | Remove-Item -Force
 tunnel:
 	jprq http 7 -s platform
 collect:
 	python manage.py collectstatic --noinput
 open-bash:
 	docker exec -it drf_api bash
-
