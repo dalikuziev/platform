@@ -33,7 +33,6 @@ class IndividualTaskResource(resources.ModelResource):
     class Meta:
         model = IndividualTask
 
-
 @admin.register(Course)
 class CourseAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [WeekDayResource]
