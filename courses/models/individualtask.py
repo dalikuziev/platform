@@ -2,6 +2,8 @@ from django.db import models
 from accounts.models import User
 from django_extensions.db.models import TimeStampedModel
 from ..models import Course, Lesson
+from shared.validators import clean_future_date
+
 
 class IndividualTask(TimeStampedModel):
     course = models.ForeignKey(
@@ -30,9 +32,7 @@ class IndividualTask(TimeStampedModel):
     )
     title = models.CharField(max_length=255)
     description = models.TextField()
-    deadline = models.DateTimeField()
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    deadline = models.DateTimeField(validators=[clean_future_date])
 
     class Meta:
         ordering = ['-created']

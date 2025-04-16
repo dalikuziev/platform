@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import User
 from django_extensions.db.models import TimeStampedModel
+from shared.validators import clean_future_date
 
 class WeekDay(TimeStampedModel):
     DAY_CHOICES = (
@@ -33,7 +34,7 @@ class Course(TimeStampedModel):
         blank=True
     )
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    start_date = models.DateField()
+    start_date = models.DateField(validators=[clean_future_date])
     lesson_days = models.ManyToManyField(
         WeekDay,
         blank=True
@@ -44,7 +45,7 @@ class Course(TimeStampedModel):
     lesson_duration = models.PositiveIntegerField(
         default=90
     )
-    end_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True, validators=[clean_future_date])
     is_active = models.BooleanField(default=True)
 
     class Meta:

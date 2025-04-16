@@ -34,15 +34,16 @@ INSTALLED_APPS = [
 
 THIRD_APPS = [
     'drf_material',
-    'drf_spectacular',
-    'drf_spectacular_sidecar',
-    "corsheaders",
+    # 'drf_spectacular',
+    # 'drf_spectacular_sidecar',
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'colorfield',
     'import_export',
     'django_extensions',
+    'rest_framework.authtoken',
 ]
 
 LOCAL_APPS = [
@@ -50,6 +51,8 @@ LOCAL_APPS = [
     'courses',
     'assignments',
     'parents',
+    'notifications',
+    'payments',
 ]
 
 INSTALLED_APPS += LOCAL_APPS
@@ -173,7 +176,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',

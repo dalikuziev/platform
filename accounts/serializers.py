@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -41,3 +42,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'email': {'required': False},
             'phone': {'required': False},
         }
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"confirm_password": "New passwords must match."})
+        return attrs

@@ -4,6 +4,7 @@ django-colorfield
 django-cors-headers
 django-debug-toolbar
 django-extensions
+django-filter
 django-import-export[all]
 django-jazzmin
 djangorestframework

@@ -2,7 +2,10 @@ from django.db import models
 from .course import Course
 from django_extensions.db.models import TimeStampedModel
 
-class Lesson(TimeStampedModel):
+from shared.models import DraftModel
+
+
+class Lesson(TimeStampedModel, DraftModel):
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -12,7 +15,7 @@ class Lesson(TimeStampedModel):
     content = models.TextField()
     video_url = models.URLField(blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
-    created = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         ordering = ['order']

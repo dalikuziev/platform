@@ -14,15 +14,15 @@ class UserResource(resources.ModelResource):
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
     # Ro'yxat ko'rinishi
-    list_display = ('username', 'first_name', 'last_name', 'email', 'role')
+    list_display = ('username', 'first_name', 'last_name', 'email', 'role', 'birth_date')
     list_filter = ('role', 'is_staff', 'is_active')
     search_fields = ('username', 'email', 'phone')
-    ordering = ('-date_joined',)
+    ordering = ('-date_joined', 'birth_date')
 
     # Foydalanuvchini tahrirlash formasi
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name')}),
+        (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name', 'birth_date')}),
         (_('Permissions'), {
             'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
