@@ -10,6 +10,7 @@ class UserResource(resources.ModelResource):
     class Meta:
         model = User
 
+a= 5
 
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
