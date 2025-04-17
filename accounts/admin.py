@@ -9,7 +9,7 @@ from .models import User
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
-a = 2
+
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
     # Ro'yxat ko'rinishi
