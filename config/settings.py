@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-THIRD_APPS = [
+THIRD_APPS = {
     'drf_material',
     # 'drf_spectacular',
     # 'drf_spectacular_sidecar',
@@ -43,8 +43,9 @@ THIRD_APPS = [
     'colorfield',
     'import_export',
     'django_extensions',
+    'django_filters',
     'rest_framework.authtoken',
-]
+}
 
 LOCAL_APPS = [
     'accounts',
@@ -55,8 +56,8 @@ LOCAL_APPS = [
     'payments',
 ]
 
-INSTALLED_APPS += LOCAL_APPS
 INSTALLED_APPS += THIRD_APPS
+INSTALLED_APPS += LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -174,6 +175,7 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.SearchFilter',
+        # 'django_filters.rest_framework.DjangoFilterBackend',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.SessionAuthentication',

@@ -32,7 +32,7 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'role', 'phone'),
+            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role'),
         }),
     )
 
