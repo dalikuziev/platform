@@ -52,7 +52,6 @@ LOCAL_APPS = [
     'courses',
     'assignments',
     'parents',
-    'notifications',
     'payments',
 ]
 
