@@ -56,3 +56,5 @@ class ChangePasswordSerializer(serializers.Serializer):
         if attrs['new_password'] != attrs['confirm_password']:
             raise serializers.ValidationError({"confirm_password": "New passwords must match."})
         return attrs
+
+a = 1
