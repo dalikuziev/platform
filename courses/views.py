@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -22,14 +23,16 @@ class CourseListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(teacher=self.request.user)
 
-class CourseDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    permission_classes = [IsCourseTeacher]
+    # permission_classes = [IsAuthenticated]
+    print(IsAuthenticated, IsCourseTeacher)
 
-    def perform_destroy(self, instance):
-        instance.is_active = False
-        instance.save()
+    def get_object(self):
+        # ID ni URL dan olish
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Course, pk=pk)
 
 class LessonListCreateView(generics.ListCreateAPIView):
     serializer_class = LessonSerializer

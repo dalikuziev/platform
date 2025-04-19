@@ -1,6 +1,9 @@
 from django.core.exceptions import ValidationError
-from django.utils.timezone import now
+from datetime import date, datetime
 
 def clean_future_date(value):
-    if value < now():
-        raise ValidationError("Vaqt hozirgi vaqtdan oldin bo'lishi mumkin emas.")
+    if isinstance(value, datetime):
+        value = value.date()  # datetime ni date turiga o‘tkazamiz
+    if value < date.today():
+        raise ValidationError("Sana o‘tgan kun bo‘lishi mumkin emas!")
+    return value
