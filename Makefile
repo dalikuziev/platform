@@ -11,7 +11,7 @@ migrate:
 mig:
 	make migration && make migrate
 cru:
-	python manage.py createsuperuser --username=admin --email=admin@gmail.com
+	python3 manage.py createsuperuser --username=admin --email=dalikuziev@gmail.com
 run-asgi:
 	uvicorn config.asgi:application --host 0.0.0.0 --port 1298 --reload
 clear:
@@ -25,7 +25,7 @@ re-mig:
 run-wsgi:
 	python3 manage.py runserver 0.0.0.0:1298
 startapp:
-	python manage.py startapp $(name) && mv $(name) apps/$(name)
+	python3 manage.py startapp $(name) && mv $(name) apps/$(name)
 clear-linux:
 	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete
 clear-windows:
@@ -34,6 +34,6 @@ clear-windows:
 tunnel:
 	jprq http 7 -s platform
 collect:
-	python manage.py collectstatic --noinput
+	python3 manage.py collectstatic --noinput
 open-bash:
 	docker exec -it drf_api bash
