@@ -37,6 +37,9 @@ class LogoutView(APIView):
                 {"detail": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+    def get(self, request):
+        return Response({"message": "Change password endpoint. Please use POST."})
+
 
 
 class ChangePasswordView(APIView):
@@ -76,3 +79,5 @@ class ChangePasswordView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        return Response({"message": "Change password endpoint. Please use POST."})
