@@ -90,6 +90,3 @@ class ActiveUserFilter(SimpleListFilter):
 
 # UserAdmin classiga qo'shing
 list_filter = (ActiveUserFilter, 'role', 'is_staff')
-
-
-admin = 0
