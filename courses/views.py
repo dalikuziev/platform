@@ -26,8 +26,7 @@ class CourseListCreateView(generics.ListCreateAPIView):
 class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    # permission_classes = [IsAuthenticated]
-    print(IsAuthenticated, IsCourseTeacher)
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         # ID ni URL dan olish
