@@ -11,9 +11,9 @@ migrate:
 mig:
 	make migration && make migrate
 cru:
-	python3 manage.py createsuperuser --username=admin --email=dalikuziev@gmail.com
+	python3 manage.py createsuperuser --username=dalikuziev --email=dalikuziev@gmail.com
 run-asgi:
-	uvicorn config.asgi:application --host 0.0.0.0 --port 1298 --reload
+	uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload
 clear:
 	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete
 no-db:
@@ -23,7 +23,7 @@ re-django:
 re-mig:
 	make no-db && make clear && make re-django && make mig && make cru && make run
 run-wsgi:
-	python3 manage.py runserver 0.0.0.0:1298
+	python3 manage.py runserver 0.0.0.0:8000
 startapp:
 	python3 manage.py startapp $(name) && mv $(name) apps/$(name)
 clear-linux:

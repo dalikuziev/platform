@@ -13,7 +13,7 @@ class UserResource(resources.ModelResource):
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
     # Ro'yxat ko'rinishi
-    list_display = ('username', 'first_name', 'last_name', 'email', 'role', 'birth_date')
+    list_display = [f.name for f in User._meta.fields]
     list_filter = ('role', 'is_staff', 'is_active')
     search_fields = ('username', 'email', 'phone')
     ordering = ('-date_joined', 'birth_date')

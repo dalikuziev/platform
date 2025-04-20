@@ -25,7 +25,7 @@ class StudentReportResource(ModelResource):
 @admin.register(ParentProfile)
 class ParentProfileAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [ParentProfileResource]
-    list_display = ('user', 'phone', 'children_list')
+    list_display = [f.name for f in ParentProfile._meta.fields]
     search_fields = ('user__username', 'phone')
     filter_horizontal = ('children',)
 
@@ -36,7 +36,7 @@ class ParentProfileAdmin(BaseAdmin, ImportExportModelAdmin):
 @admin.register(StudentReport)
 class StudentReportAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [StudentReportResource]
-    list_display = ('student', 'course', 'attendance_percentage', 'is_published')
+    list_display = [f.name for f in StudentReport._meta.fields]
     list_filter = ('course', 'is_published')
     search_fields = ('student__username', 'course__title')
     readonly_fields = ('created',)

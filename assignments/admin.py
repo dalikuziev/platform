@@ -1,7 +1,6 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-
 from .models import Assignment, Submission, Grade
 from shared.admin import BaseAdmin
 
@@ -32,7 +31,7 @@ class GradeResource(resources.ModelResource):
 @admin.register(Assignment)
 class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [AssignmentResource]
-    list_display = ('title', 'lesson', 'deadline', 'max_score')
+    list_display = [f.name for f in Assignment._meta.fields]
     list_filter = ('lesson__course',)
     search_fields = ('title', 'lesson__title')
     inlines = [SubmissionInline]
@@ -40,7 +39,7 @@ class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
 @admin.register(Submission)
 class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [SubmissionResource]
-    list_display = ('assignment', 'student', 'created')
+    list_display = [f.name for f in Submission._meta.fields]
     list_filter = ('assignment__lesson__course',)
     search_fields = ('student__username', 'assignment__title')
     inlines = [GradeInline]
@@ -48,6 +47,6 @@ class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
 @admin.register(Grade)
 class GradeAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [GradeResource]
-    list_display = ('submission', 'score', 'graded_by', 'created')
+    list_display = [f.name for f in Grade._meta.fields]
     list_filter = ('graded_by', 'submission__assignment__lesson__course')
     search_fields = ('submission__student__username', 'feedback')

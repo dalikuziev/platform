@@ -15,7 +15,7 @@ class User(AbstractUser):
         ('parents', 'Parents'),
         ('admin', 'Admin'),
     )
-    role = models.CharField(max_length=20, choices=ROLES, default='student')
+    role = models.CharField(max_length=20, choices=ROLES, default='admin')
     phone = models.CharField(validators=[phone_regex], max_length=13, blank=True)
     email = models.EmailField(null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)

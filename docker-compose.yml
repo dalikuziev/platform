@@ -3,7 +3,7 @@ services:
     build: .
     container_name: drf_api
     ports:
-      - "1298:1298"
+      - "8000:8000"
       - "4040:4040"
     env_file:
       - ./config/.env
