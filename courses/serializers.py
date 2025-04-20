@@ -5,7 +5,8 @@ from accounts.serializers import UserSerializer
 class LessonAttachmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonAttachment
-        fields = ['id', 'title', 'file', 'description', 'created']
+        # fields = ['id', 'title', 'file', 'description', 'created']
+        fields = '__all__'
         read_only_fields = ['created']
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -13,16 +14,17 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = [
-            'id', 'title', 'content', 'video_url',
-            'created', 'attachments',
-        ]
+        # fields = [
+        #     'id', 'title', 'content', 'video_url',
+        #     'created', 'attachments',
+        # ]
+        fields = '__all__'
         read_only_fields = ['created']
 
 class CourseSerializer(serializers.ModelSerializer):
     teacher = UserSerializer(read_only=True)
     lessons = LessonSerializer(many=True, read_only=True)
-    student_count = serializers.IntegerField(read_only=True)
+    # student_count = serializers.IntegerField(read_only=True)
     is_enrolled = serializers.SerializerMethodField()
 
     def validate_title(self, value):
@@ -36,16 +38,17 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = [
-            'id', 'title', 'description', 'cover_image', 'teacher',
-            'price', 'start_date', 'end_date', 'is_active', 'created',
-            'lessons', 'student_count', 'is_enrolled'
-        ]
+        # fields = [
+        #     'id', 'title', 'description', 'cover_image', 'teacher',
+        #     'price', 'is_active', 'created',
+        #     'lessons', 'is_enrolled'
+        # ]
+        fields = '__all__'
         read_only_fields = ['teacher', 'created', 'modified']
 
-    def get_is_enrolled(self, obj):
-        user = self.context['request'].user
-        return obj.students.filter(id=user.id).exists()
+    # def get_is_enrolled(self, obj):
+    #     user = self.context['request'].user
+    #     return obj.students.filter(id=user.id).exists()
 
 class IndividualTaskSerializer(serializers.ModelSerializer):
     teacher = serializers.StringRelatedField()
@@ -56,20 +59,23 @@ class IndividualTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IndividualTask
-        fields = [
-            'id', 'course', 'lesson', 'teacher', 'student',
-            'title', 'description', 'deadline',
-            'created', 'modified'
-        ]
+        # fields = [
+        #     'id', 'course', 'lesson', 'teacher', 'student',
+        #     'title', 'description', 'deadline',
+        #     'created', 'modified'
+        # ]
+        fields = '__all__'
         read_only_fields = ['teacher', 'created', 'modified']
 
 class IndividualTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndividualTask
-        fields = [
-            'course', 'lesson', 'student',
-            'title', 'description', 'deadline'
-        ]
+        # fields = [
+        #     'course', 'lesson', 'student',
+        #     'title', 'description', 'deadline'
+        # ]
+    fields = '__all__'
+
     def validate(self, data):
         # O'qituvchi kurs o'qituvchisi ekanligini tekshiramiz
         if self.context['request'].user != data['course'].teacher:
