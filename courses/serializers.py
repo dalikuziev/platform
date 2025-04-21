@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Course, Lesson, LessonAttachment, IndividualTask
 from accounts.serializers import UserSerializer
+from .models import StudentLesson
 
 class LessonAttachmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,6 +21,11 @@ class LessonSerializer(serializers.ModelSerializer):
         # ]
         fields = '__all__'
         read_only_fields = ['created']
+
+class StudentLessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentLesson
+        fields = '__all__'
 
 class CourseSerializer(serializers.ModelSerializer):
     teacher = UserSerializer(read_only=True)
@@ -46,9 +52,11 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['teacher', 'created', 'modified']
 
-    # def get_is_enrolled(self, obj):
-    #     user = self.context['request'].user
-    #     return obj.students.filter(id=user.id).exists()
+    def get_is_enrolled(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.studentgroup_set.filter(students=request.user).exists()
+        return False
 
 class IndividualTaskSerializer(serializers.ModelSerializer):
     teacher = serializers.StringRelatedField()

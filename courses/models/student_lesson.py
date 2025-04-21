@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
 from groups.models import StudentGroup
 from . import Lesson
 from django_extensions.db.models import TimeStampedModel

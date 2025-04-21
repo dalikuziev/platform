@@ -8,13 +8,13 @@ class IsCourseTeacher(permissions.BasePermission):
         if 'course_id' in view.kwargs:
             return Course.objects.filter(
                 id=view.kwargs['course_id'],
-                teacher=request.user
+                owner=request.user
             ).exists()
-        elif 'pk' in view.kwargs:
-            return Course.objects.filter(
-                id=view.kwargs['pk'],
-                teacher=request.user
-            ).exists()
+        # elif 'pk' in view.kwargs:
+        #     return Course.objects.filter(
+        #         id=view.kwargs['pk'],
+        #         teacher=request.user
+        #     ).exists()
         return False
 
 class IsEnrolledStudent(permissions.BasePermission):

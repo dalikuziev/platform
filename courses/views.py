@@ -3,9 +3,10 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from .models import Course, Lesson, LessonAttachment, IndividualTask
-from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
+from .models import Course, Lesson, LessonAttachment, IndividualTask, StudentLesson
+from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer, StudentLessonSerializer
 from .permissions import IsCourseTeacher, IsEnrolledStudent
+from rest_framework import viewsets
 
 class CourseListCreateView(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
@@ -44,6 +45,10 @@ class LessonListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(course_id=self.kwargs['course_id'])
+
+class StudentLessonViewSet(viewsets.ModelViewSet):
+    queryset = StudentLesson.objects.all()
+    serializer_class = StudentLessonSerializer
 
 class EnrollCourseView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsEnrolledStudent]
