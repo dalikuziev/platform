@@ -3,7 +3,6 @@ from .course import Course
 from django_extensions.db.models import TimeStampedModel
 from shared.models import DraftModel
 
-
 class Lesson(TimeStampedModel, DraftModel):
     course = models.ForeignKey(
         Course,
