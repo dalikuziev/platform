@@ -26,7 +26,20 @@ class StudentGroupResource(resources.ModelResource):
 
 @admin.register(StudentGroup)
 class StudentGroupAdmin(ImportExportModelAdmin, BaseAdmin):
-    list_display = [f.name for f in StudentGroup._meta.fields]
+    list_display = [f.name for f in StudentGroup._meta.fields if f.name != 'students'] + ['students_list', 'students_count']
+
+    def students_list(self, obj):
+        students = obj.students.all()[:2]
+        student_names = [str(student) for student in students]
+        result = ", ".join(student_names)
+        if obj.students.count() > 3:
+            result += "..."
+        return result
+
+    def students_count(self, obj):
+        return obj.students.count()
+    students_count.short_description = 'Students Count'
+
     def get_form(self, request, obj=None, **kwargs):
         kwargs['form'] = StudentGroupForm  # o'z formimizni beramiz
         form = super().get_form(request, obj, **kwargs)

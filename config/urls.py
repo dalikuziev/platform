@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/assignments/', include('assignments.urls')),
     path('api/parents/', include('parents.urls')),
     path('api/payments/', include('payments.urls')),
+    path('api/groups/', include('groups.urls')),
 ]
 
 # spectacular_urls = [
