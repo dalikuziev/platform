@@ -1,10 +1,15 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from .views import (
     AssignmentListCreateView,
     SubmissionCreateView,
     GradeCreateUpdateView,
-    StudentGradesView
+    StudentGradesView,
+    StudentAssignmentViewSet
 )
+
+router = DefaultRouter()
+router.register(r'student-assignments', StudentAssignmentViewSet, basename='student-assignment')
 
 urlpatterns = [
     path('lessons/<int:lesson_id>/assignments/',
@@ -15,4 +20,5 @@ urlpatterns = [
          GradeCreateUpdateView.as_view(), name='grade-submission'),
     path('my/grades/',
          StudentGradesView.as_view(), name='student-grades'),
+    path('', include(router.urls)),
 ]

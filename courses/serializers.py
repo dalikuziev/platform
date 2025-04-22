@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Course, Lesson, LessonAttachment, IndividualTask
 from accounts.serializers import UserSerializer
-from .models import StudentLesson
 
 class LessonAttachmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,11 +20,6 @@ class LessonSerializer(serializers.ModelSerializer):
         # ]
         fields = '__all__'
         read_only_fields = ['created']
-
-class StudentLessonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StudentLesson
-        fields = '__all__'
 
 class CourseSerializer(serializers.ModelSerializer):
     teacher = UserSerializer(read_only=True)

@@ -1,5 +1,9 @@
 from rest_framework import permissions
 
+class IsTeacherOrAdmin(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role == 'teacher' or request.user.is_staff
+
 class IsTeacher(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.role == 'teacher'
@@ -12,7 +16,6 @@ class IsParent(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.role == 'parent'
 
-class IsTeacherOrAdmin(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.user.role == 'teacher' or request.user.is_staff
 
+
+# TODO merge these permissions

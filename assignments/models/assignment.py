@@ -6,7 +6,6 @@ from django_extensions.db.models import TimeStampedModel
 
 from shared.validators import clean_future_date
 
-
 class Assignment(TimeStampedModel):
     lesson = models.ForeignKey(
         Lesson,

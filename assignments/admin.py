@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import Assignment, Submission, Grade
+from .models import Assignment, Submission, Grade, StudentAssignment
 from shared.admin import BaseAdmin
 
 class SubmissionInline(admin.TabularInline):
@@ -26,7 +26,9 @@ class SubmissionResource(resources.ModelResource):
 class GradeResource(resources.ModelResource):
     class Meta:
         model = Grade
-
+class StudentAssignmentResource(resources.ModelResource):
+    class Meta:
+        model = StudentAssignment
 
 @admin.register(Assignment)
 class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
@@ -50,3 +52,8 @@ class GradeAdmin(BaseAdmin, ImportExportModelAdmin):
     list_display = [f.name for f in Grade._meta.fields]
     list_filter = ('graded_by', 'submission__assignment__lesson__course')
     search_fields = ('submission__student__username', 'feedback')
+
+@admin.register(StudentAssignment)
+class StudentAssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
+    resource_classes = [StudentAssignmentResource]
+    list_display = [f.name for f in StudentAssignment._meta.fields]

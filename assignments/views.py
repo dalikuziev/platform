@@ -1,12 +1,13 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
-from .models import Assignment, Submission, Grade
-from .serializers import AssignmentSerializer, SubmissionSerializer, GradeSerializer
-from .permissions import IsCourseTeacher, IsEnrolledStudent
+from .models import Assignment, Grade, StudentAssignment
+from .serializers import AssignmentSerializer, SubmissionSerializer, GradeSerializer, StudentAssignmentSerializer
+from .permissions import IsCourseOwner, IsEnrolledStudent
+from rest_framework.permissions import IsAuthenticated
 
 class AssignmentListCreateView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
-    permission_classes = [IsCourseTeacher]
+    permission_classes = [IsCourseOwner]
 
     def get_queryset(self):
         lesson_id = self.kwargs['lesson_id']
@@ -29,7 +30,7 @@ class SubmissionCreateView(generics.CreateAPIView):
 
 class GradeCreateUpdateView(generics.CreateAPIView, generics.UpdateAPIView):
     serializer_class = GradeSerializer
-    permission_classes = [IsCourseTeacher]
+    permission_classes = [IsCourseOwner]
 
     def create(self, request, *args, **kwargs):
         submission_id = kwargs['submission_id']
@@ -49,3 +50,13 @@ class StudentGradesView(generics.ListAPIView):
         return Grade.objects.filter(
             submission__student=self.request.user
         ).select_related('submission', 'submission__assignment')
+
+class StudentAssignmentViewSet(viewsets.ModelViewSet):
+    queryset = StudentAssignment.objects.all()
+    serializer_class = StudentAssignmentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Faqat o'ziga tegishli topshiriqlarni ko'rsin (agar kerak bo‘lsa)
+        user = self.request.user
+        return StudentAssignment.objects.filter(student=user) if not user.is_staff else StudentAssignment.objects.all()

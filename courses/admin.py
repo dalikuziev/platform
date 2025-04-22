@@ -3,8 +3,6 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from .models import Course, Lesson, LessonAttachment, WeekDay, IndividualTask
 from shared.admin import BaseAdmin
-from .models.student_lesson import StudentLesson
-
 
 @admin.register(WeekDay)
 class WeekDayAdmin(admin.ModelAdmin):
@@ -26,9 +24,7 @@ class CourseResource(resources.ModelResource):
 class LessonResource(resources.ModelResource):
     class Meta:
         model = Lesson
-class StudentLessonResource(resources.ModelResource):
-    class Meta:
-        model = StudentLesson
+
 class LessonAttachmentResource(resources.ModelResource):
     class Meta:
         model = LessonAttachment
@@ -63,11 +59,6 @@ class LessonAdmin(BaseAdmin, ImportExportModelAdmin):
     list_display = [f.name for f in Lesson._meta.fields]
     list_filter = ('course',)
     search_fields = ('title', 'content', 'course__title')
-
-@admin.register(StudentLesson)
-class StudentLesson(BaseAdmin, ImportExportModelAdmin):
-    resource_classes = [StudentLessonResource]
-    list_display = [f.name for f in StudentLesson._meta.fields]
 
 @admin.register(LessonAttachment)
 class LessonAttachmentAdmin(BaseAdmin, ImportExportModelAdmin):

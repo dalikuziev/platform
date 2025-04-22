@@ -7,17 +7,11 @@ from shared.models import DraftModel
 
 User = get_user_model()
 
-class StudentLesson(TimeStampedModel, DraftModel):
-    STATES = (
-        ('qabul qilingan', 'Qabul qilingan'),
-        ('berilmagan', 'Berilmagan'),
-        ('qaytarilgan', 'Qaytarilgan'),
-        ('bajarilmagan', 'Bajarilmagan'),
-    )
+class Attendance(TimeStampedModel, DraftModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    state = models.CharField(max_length=20, choices=STATES, default='berilmagan')
+    is_attended = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.lesson.title} - {self.student.username} - {self.state}"

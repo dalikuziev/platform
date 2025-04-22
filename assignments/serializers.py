@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Assignment, Submission, Grade
+from .models import Assignment, Submission, Grade, StudentAssignment
 from courses.serializers import LessonSerializer
 from accounts.serializers import UserSerializer
 
@@ -36,3 +36,11 @@ class GradeSerializer(serializers.ModelSerializer):
         model = Grade
         fields = '__all__'
         read_only_fields = ('created',)
+
+class StudentAssignmentSerializer(serializers.ModelSerializer):
+    lesson_title = serializers.CharField(source='lesson.title', read_only=True)
+    student_username = serializers.CharField(source='student.username', read_only=True)
+
+    class Meta:
+        model = StudentAssignment
+        fields = '__all__'
