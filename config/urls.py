@@ -7,12 +7,12 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 
 urlpatterns = [
     path(ADMIN_URL, admin.site.urls),
-    path('api/auth/', include('accounts.urls')),
-    path('api/courses/', include('courses.urls')),
-    path('api/assignments/', include('assignments.urls')),
-    path('api/parents/', include('parents.urls')),
-    path('api/payments/', include('payments.urls')),
-    path('api/groups/', include('groups.urls')),
+    path('api/auth/', include('apps.v1.accounts.urls')),
+    path('api/courses/', include('apps.v1.courses.urls')),
+    path('api/assignments/', include('apps.v1.assignments.urls')),
+    path('api/parents/', include('apps.v1.parents.urls')),
+    path('api/payments/', include('apps.v1.payments.urls')),
+    path('api/groups/', include('apps.v1.groups.urls')),
 ]
 
 # spectacular_urls = [

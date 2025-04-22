@@ -49,12 +49,12 @@ THIRD_APPS = {
 }
 
 LOCAL_APPS = [
-    'accounts',
-    'courses',
-    'assignments',
-    'parents',
-    'payments',
-    'groups',
+    'apps.v1.accounts',
+    'apps.v1.courses',
+    'apps.v1.assignments',
+    'apps.v1.parents',
+    'apps.v1.payments',
+    'apps.v1.groups',
 ]
 
 INSTALLED_APPS += THIRD_APPS
