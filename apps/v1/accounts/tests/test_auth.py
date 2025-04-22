@@ -1,6 +1,8 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
+
 from ..models import User
+
 
 class AuthAPITests(APITestCase):
     def setUp(self):
@@ -35,4 +37,3 @@ class AuthAPITests(APITestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertIn('access', response.data)
-

@@ -3,13 +3,15 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import User
+
 from apps.v1.shared.admin import BaseAdmin
+from .models import User
 
 
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
+
 
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
@@ -34,7 +36,8 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role'),
+            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date',
+                       'role'),
         }),
     )
 
@@ -60,19 +63,23 @@ admin.site.unregister(Group)
 # Custom User modelini ro'yxatdan o'tkazish
 admin.site.register(User, CustomUserAdmin)
 
+
 # 2. Maxsus Actionlar
 
 @admin.action(description="Tanlangan foydalanuvchilarni bloklash")
 def block_users(self, request, queryset):
     queryset.update(is_active=False)
 
+
 @admin.action(description="Tanlangan foydalanuvchilarni aktivlashtirish")
 def unblock_users(self, request, queryset):
     queryset.update(is_active=True)
 
+
 # 3. Qo'shimcha Filterlar
 
 from django.contrib.admin import SimpleListFilter
+
 
 class ActiveUserFilter(SimpleListFilter):
     title = 'Faollik holati'
@@ -89,6 +96,7 @@ class ActiveUserFilter(SimpleListFilter):
             return queryset.filter(is_active=True)
         if self.value() == 'inactive':
             return queryset.filter(is_active=False)
+
 
 # UserAdmin classiga qo'shing
 list_filter = (ActiveUserFilter, 'role', 'is_staff')

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import ParentProfile, StudentReport
 from import_export.admin import ImportExportModelAdmin
-from import_export.resources import  ModelResource
+from import_export.resources import ModelResource
 
 from apps.v1.shared.admin import BaseAdmin
+from .models import ParentProfile, StudentReport
 
 
 class StudentReportInline(admin.TabularInline):
@@ -16,6 +16,7 @@ class StudentReportInline(admin.TabularInline):
 class ParentProfileResource(ModelResource):
     class Meta:
         model = ParentProfile
+
 
 class StudentReportResource(ModelResource):
     class Meta:
@@ -31,7 +32,9 @@ class ParentProfileAdmin(BaseAdmin, ImportExportModelAdmin):
 
     def children_list(self, obj):
         return ", ".join([child.username for child in obj.children.all()])
+
     children_list.short_description = "Children"
+
 
 @admin.register(StudentReport)
 class StudentReportAdmin(BaseAdmin, ImportExportModelAdmin):

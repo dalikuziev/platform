@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Course, Lesson, LessonAttachment, IndividualTask
+
 from apps.v1.accounts.serializers import UserSerializer
+from .models import Course, Lesson, LessonAttachment, IndividualTask
+
 
 class LessonAttachmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,6 +10,7 @@ class LessonAttachmentSerializer(serializers.ModelSerializer):
         # fields = ['id', 'title', 'file', 'description', 'created']
         fields = '__all__'
         read_only_fields = ['created']
+
 
 class LessonSerializer(serializers.ModelSerializer):
     attachments = LessonAttachmentSerializer(many=True, read_only=True)
@@ -21,16 +24,18 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['created']
 
+
 class CourseSerializer(serializers.ModelSerializer):
     teacher = UserSerializer(read_only=True)
     lessons = LessonSerializer(many=True, read_only=True)
+
     # student_count = serializers.IntegerField(read_only=True)
-    is_enrolled = serializers.SerializerMethodField()
 
     def validate_title(self, value):
         if not value.strip():
             raise serializers.ValidationError("Sarlavha bo'sh bo'lishi mumkin emas")
         return value
+
     def validate_price(self, value):
         if value < 0:
             raise serializers.ValidationError("Narh manfiy bo'lishi mumkin emas")
@@ -46,9 +51,6 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['teacher', 'created', 'modified']
 
-    # def get_is_enrolled(self, obj):
-    #     user = self.context['request'].user
-    #     return obj.students.filter(id=user.id).exists()
 
 class IndividualTaskSerializer(serializers.ModelSerializer):
     teacher = serializers.StringRelatedField()
@@ -67,6 +69,7 @@ class IndividualTaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['teacher', 'created', 'modified']
 
+
 class IndividualTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndividualTask
@@ -74,6 +77,7 @@ class IndividualTaskCreateSerializer(serializers.ModelSerializer):
         #     'course', 'lesson', 'student',
         #     'title', 'description', 'deadline'
         # ]
+
     fields = '__all__'
 
     def validate(self, data):

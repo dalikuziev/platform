@@ -1,6 +1,8 @@
 from django.test import TestCase, RequestFactory
+
 from ..models import User
 from ..permissions import IsTeacher, IsStudent, IsParent, IsTeacherOrAdmin
+
 
 class PermissionTests(TestCase):
     def setUp(self):

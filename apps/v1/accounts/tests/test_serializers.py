@@ -1,4 +1,5 @@
 from rest_framework.test import APITestCase
+
 from ..serializers import UserRegisterSerializer
 
 
@@ -18,4 +19,3 @@ class UserSerializerTest(APITestCase):
         data = {'username': 'user1', 'password': '123', 'role': 'teacher'}
         serializer = UserRegisterSerializer(data=data)
         self.assertTrue(serializer.is_valid())
-

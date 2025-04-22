@@ -1,7 +1,9 @@
 from django.db import models
-from apps.v1.accounts.models import User
 from django_extensions.db.models import TimeStampedModel
+
+from apps.v1.accounts.models import User
 from .assignment import Assignment
+
 
 class Submission(TimeStampedModel):
     assignment = models.ForeignKey(
@@ -27,5 +29,6 @@ class Submission(TimeStampedModel):
         else:
             self.is_late = self.created > self.assignment.deadline
         super().save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.student} - {self.assignment}'

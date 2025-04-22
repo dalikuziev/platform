@@ -1,9 +1,7 @@
 from django.db import models
-from .course import Course
 from django_extensions.db.models import TimeStampedModel
-
+from .course import Course
 from ...shared.models import DraftModel
-
 
 class Lesson(TimeStampedModel, DraftModel):
     course = models.ForeignKey(

@@ -1,8 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
+
 from .models import StudentGroup
 from .serializers import StudentGroupSerializer
-from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend
+
 
 class StudentGroupViewSet(viewsets.ModelViewSet):
     queryset = StudentGroup.objects.all().prefetch_related('students', 'lesson_days')

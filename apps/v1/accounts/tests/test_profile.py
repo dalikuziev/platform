@@ -1,15 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APITestCase
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 class ProfileTests(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='testuser',
             password='Testpass123!',
-            email = 'test@example.com',
+            email='test@example.com',
             role='teacher',
         )
         self.user2 = User.objects.create_user(
@@ -31,4 +32,3 @@ class ProfileTests(APITestCase):
         data = {'first_name': 'Test', 'phone': '+998901234567'}
         response = self.client.patch(url, data)
         self.assertEqual(response.status_code, 200)
-

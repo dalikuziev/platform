@@ -5,6 +5,7 @@ from django_extensions.db.models import TimeStampedModel
 
 from .lesson import Lesson
 
+
 class LessonAttachment(TimeStampedModel):
     lesson = models.ForeignKey(
         Lesson,

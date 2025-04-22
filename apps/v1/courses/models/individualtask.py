@@ -1,9 +1,8 @@
 from django.db import models
-from apps.v1.accounts.models import User
 from django_extensions.db.models import TimeStampedModel
-from ..models import Course, Lesson
+from apps.v1.accounts.models import User
+from . import Course, Lesson
 from ...shared.validators import clean_past_date
-
 
 class IndividualTask(TimeStampedModel):
     course = models.ForeignKey(
@@ -37,8 +36,10 @@ class IndividualTask(TimeStampedModel):
     class Meta:
         ordering = ['-created']
         unique_together = ['course', 'student', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
+
     def __str__(self):
         return f"{self.title} - {self.student.username}"
+
     def save(self, *args, **kwargs):
         # O'qituvchi kursning o'qituvchisi ekanligini tekshiramiz
         if self.teacher != self.course.teacher:

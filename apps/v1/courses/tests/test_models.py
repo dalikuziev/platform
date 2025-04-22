@@ -1,14 +1,17 @@
-from django.urls import reverse
-from rest_framework.test import APITestCase
-from apps.v1.accounts.models import User
-from ..models import Course, Lesson, LessonAttachment
-from django.test import TestCase
-from django.contrib.auth import get_user_model
-from django.utils import timezone
-from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 
+from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+from django.urls import reverse
+from django.utils import timezone
+from rest_framework.test import APITestCase
+
+from apps.v1.accounts.models import User
+from ..models import Course, Lesson, LessonAttachment
+
 User = get_user_model()
+
 
 class CourseAPITests(APITestCase):
     def setUp(self):
@@ -50,6 +53,7 @@ class CourseAPITests(APITestCase):
         self.assertEqual(self.course.students.count(), 1)
         self.assertEqual(student.enrolled_courses.first(), self.course)
 
+
 #
 
 class LessonAPITest(TestCase):
@@ -86,6 +90,7 @@ class LessonAPITest(TestCase):
         except:
             # Agar URL test qilinmasa yoki mavjud bo'lmasa
             pass
+
 
 class LessonAttachmentAPITests(TestCase):
     @classmethod
@@ -186,4 +191,3 @@ class LessonAttachmentAPITests(TestCase):
         self.assertFalse(os.path.exists(file_path))
         with self.assertRaises(LessonAttachment.DoesNotExist):
             LessonAttachment.objects.get(id=attachment_id)
-

@@ -1,8 +1,9 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,17 +11,21 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone']
         read_only_fields = ['id', 'role']
 
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """JWT tokeniga qo'shimcha maydonlar (role) qo'shish"""
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         token['role'] = user.role
         return token
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     """Ro'yxatdan o'tish uchun serializer"""
     password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ('username', 'password', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role')
@@ -37,6 +42,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             birth_date=validated_data['birth_date'],
         )
         return user
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -47,6 +54,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'phone': {'required': False},
         }
 
+
 class ChangePasswordSerializer(serializers.Serializer):
     password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
@@ -56,5 +64,3 @@ class ChangePasswordSerializer(serializers.Serializer):
         if attrs['new_password'] != attrs['confirm_password']:
             raise serializers.ValidationError({"confirm_password": "New passwords must match."})
         return attrs
-
-a = 1

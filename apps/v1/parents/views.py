@@ -1,16 +1,18 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
+
+from apps.v1.accounts.models import User
+from apps.v1.assignments.models import Assignment, Submission
+from apps.v1.courses.models import Course
 from .models import ParentProfile, StudentReport
 from .serializers import (
     ParentProfileSerializer,
     StudentReportSerializer,
     ReportGenerateSerializer
 )
-from apps.v1.accounts.models import User
-from apps.v1.courses.models import Course
-from apps.v1.assignments.models import Assignment, Submission
+
 
 class ParentProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ParentProfileSerializer
@@ -21,6 +23,7 @@ class ParentProfileView(generics.RetrieveUpdateAPIView):
             ParentProfile,
             user=self.request.user
         )
+
 
 class ChildrenReportsView(generics.ListAPIView):
     serializer_class = StudentReportSerializer
@@ -35,6 +38,7 @@ class ChildrenReportsView(generics.ListAPIView):
             student__in=parent.children.all(),
             is_published=True
         ).select_related('student', 'course')
+
 
 class GenerateReportView(APIView):
     permission_classes = [permissions.IsAdminUser]

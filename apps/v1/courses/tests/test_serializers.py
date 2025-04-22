@@ -1,6 +1,9 @@
-from django.test import TestCase
+import os
+
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
 from rest_framework.test import APIRequestFactory
+
 from apps.v1.accounts.models import User
 from ..models import Course, Lesson, LessonAttachment
 from ..serializers import (
@@ -8,7 +11,7 @@ from ..serializers import (
     LessonSerializer,
     CourseSerializer
 )
-import os
+
 
 class SerializersTest(TestCase):
     @classmethod
@@ -160,7 +163,6 @@ class SerializersTest(TestCase):
         self.assertIn('title', serializer.errors)
         self.assertIn('price', serializer.errors)
 
-
     # def test_course_validation(self):
     #     # Sana validatsiyasi
     #     invalid_data = {
@@ -172,30 +174,16 @@ class SerializersTest(TestCase):
     #     }
     #     serializer = CourseSerializer(data=invalid_data)
     #     self.assertFalse(serializer.is_valid())
-        # self.assertIn('non_field_errors', serializer.errors)
+    # self.assertIn('non_field_errors', serializer.errors)
 
-        # # Narx validatsiyasi
-        # invalid_data = {
-        #     'title': 'Noto\'g\'ri narx',
-        #     'description': 'Manfiy narx',
-        #     'price': -100,
-        #     'start_date': '2023-01-01',
-        #     'end_date': '2023-12-31'
-        # }
-        # serializer = CourseSerializer(data=invalid_data)
-        # self.assertFalse(serializer.is_valid())
-        # self.assertIn('price', serializer.errors)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # # Narx validatsiyasi
+    # invalid_data = {
+    #     'title': 'Noto\'g\'ri narx',
+    #     'description': 'Manfiy narx',
+    #     'price': -100,
+    #     'start_date': '2023-01-01',
+    #     'end_date': '2023-12-31'
+    # }
+    # serializer = CourseSerializer(data=invalid_data)
+    # self.assertFalse(serializer.is_valid())
+    # self.assertIn('price', serializer.errors)

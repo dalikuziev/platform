@@ -1,12 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from django.db import models
 from django.core.validators import RegexValidator
+from django.db import models
 
 phone_regex = RegexValidator(
     regex=r'^\+998\d{9}$',
     message="Telefon raqam quyidagi formatda bo'lishi kerak: '+998XXXXXXXXX' (masalan, +998901234567)."
 )
+
 
 class User(AbstractUser):
     ROLES = (
@@ -33,4 +34,3 @@ class User(AbstractUser):
         if self.phone:
             if User.objects.exclude(pk=self.pk).filter(phone=self.phone).exists():
                 raise ValidationError({'phone': 'Bu raqam allaqachon foydalanilgan.'})
-

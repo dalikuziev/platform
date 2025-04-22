@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import Assignment, Submission, Grade
-from apps.v1.courses.serializers import LessonSerializer
+
 from apps.v1.accounts.serializers import UserSerializer
+from apps.v1.courses.serializers import LessonSerializer
+from .models import Assignment, Submission, Grade
+
 
 class AssignmentSerializer(serializers.ModelSerializer):
     lesson = LessonSerializer(read_only=True)
@@ -19,6 +21,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
             return obj.submissions.filter(student=request.user).exists()
         return False
 
+
 class SubmissionSerializer(serializers.ModelSerializer):
     student = UserSerializer(read_only=True)
     assignment_title = serializers.CharField(source='assignment.title', read_only=True)
@@ -27,6 +30,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
         model = Submission
         fields = '__all__'
         read_only_fields = ('created',)
+
 
 class GradeSerializer(serializers.ModelSerializer):
     submission = SubmissionSerializer(read_only=True)

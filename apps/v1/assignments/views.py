@@ -1,8 +1,10 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .models import Assignment, Submission, Grade
+
+from apps.v1.groups.permissions import IsCourseTeacher, IsEnrolledStudent
+from .models import Assignment, Grade
 from .serializers import AssignmentSerializer, SubmissionSerializer, GradeSerializer
-from .permissions import IsCourseTeacher, IsEnrolledStudent
+
 
 class AssignmentListCreateView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
@@ -16,6 +18,7 @@ class AssignmentListCreateView(generics.ListCreateAPIView):
         lesson_id = self.kwargs['lesson_id']
         serializer.save(lesson_id=lesson_id)
 
+
 class SubmissionCreateView(generics.CreateAPIView):
     serializer_class = SubmissionSerializer
     permission_classes = [IsEnrolledStudent]
@@ -26,6 +29,7 @@ class SubmissionCreateView(generics.CreateAPIView):
             assignment_id=assignment_id,
             student=self.request.user
         )
+
 
 class GradeCreateUpdateView(generics.CreateAPIView, generics.UpdateAPIView):
     serializer_class = GradeSerializer
@@ -40,6 +44,7 @@ class GradeCreateUpdateView(generics.CreateAPIView, generics.UpdateAPIView):
             graded_by=request.user
         )
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class StudentGradesView(generics.ListAPIView):
     serializer_class = GradeSerializer

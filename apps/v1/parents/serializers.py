@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import ParentProfile, StudentReport
+
 from apps.v1.accounts.serializers import UserSerializer
 from apps.v1.courses.serializers import CourseSerializer
+from .models import ParentProfile, StudentReport
+
 
 class ParentProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -11,6 +13,7 @@ class ParentProfileSerializer(serializers.ModelSerializer):
         model = ParentProfile
         fields = '__all__'
         read_only_fields = ('created',)
+
 
 class StudentReportSerializer(serializers.ModelSerializer):
     student = UserSerializer(read_only=True)
@@ -28,6 +31,7 @@ class StudentReportSerializer(serializers.ModelSerializer):
             'total': obj.total_assignments,
             'percentage': obj.progress_percentage()
         }
+
 
 class ReportGenerateSerializer(serializers.Serializer):
     course_id = serializers.IntegerField()

@@ -1,15 +1,18 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 from django_extensions.db.models import TimeStampedModel
+
 from apps.v1.courses.models import Course, WeekDay
 from apps.v1.shared.validators import clean_future_date
 
 User = get_user_model()
 
+
 class StudentGroup(TimeStampedModel):
     name = models.CharField(max_length=255)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentgroups', limit_choices_to={'role': 'teacher'})
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentgroups',
+                                limit_choices_to={'role': 'teacher'})
     students = models.ManyToManyField(
         User,
         limit_choices_to={'role__in': ['student', 'teacher']},

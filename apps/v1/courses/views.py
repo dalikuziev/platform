@@ -1,15 +1,14 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from .models import Course, Lesson, LessonAttachment, IndividualTask
+from rest_framework.response import Response
+from .models import Course, Lesson, IndividualTask
+from .permissions import IsCourseOwner
 from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
-from .permissions import IsCourseTeacher, IsEnrolledStudent
+from ..groups.permissions import IsEnrolledStudent
 
 class CourseListCreateView(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         queryset = Course.objects.filter(is_active=True)
@@ -23,6 +22,7 @@ class CourseListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(teacher=self.request.user)
 
+
 class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -33,9 +33,10 @@ class CourseDetailView(generics.RetrieveAPIView):
         pk = self.kwargs.get('pk')
         return get_object_or_404(Course, pk=pk)
 
+
 class LessonListCreateView(generics.ListCreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [IsCourseTeacher]
+    permission_classes = [IsCourseOwner]
 
     def get_queryset(self):
         return Lesson.objects.filter(
@@ -44,6 +45,7 @@ class LessonListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(course_id=self.kwargs['course_id'])
+
 
 class EnrollCourseView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsEnrolledStudent]
@@ -56,8 +58,10 @@ class EnrollCourseView(generics.CreateAPIView):
             status=status.HTTP_200_OK
         )
 
+
 class IndividualTaskListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get_queryset(self):
         user = self.request.user
         if user.role == 'teacher':
@@ -82,4 +86,3 @@ class IndividualTaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIV
         if user.role == 'teacher':
             return IndividualTask.objects.filter(teacher=user)
         return IndividualTask.objects.filter(student=user)
-

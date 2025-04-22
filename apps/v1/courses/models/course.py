@@ -1,6 +1,6 @@
 from django.db import models
-from apps.v1.accounts.models import User
 from django_extensions.db.models import TimeStampedModel
+from apps.v1.accounts.models import User
 
 class WeekDay(TimeStampedModel):
     DAY_CHOICES = (
@@ -13,6 +13,7 @@ class WeekDay(TimeStampedModel):
         ('Sunday', 'Sunday'),
     )
     day = models.CharField(max_length=30, choices=DAY_CHOICES, unique=True)
+
     def __str__(self):
         return self.day
 
@@ -26,7 +27,6 @@ class Course(TimeStampedModel):
         limit_choices_to={'role': 'teacher'},
         related_name='taught_courses'
     )
-
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_active = models.BooleanField(default=True)
 

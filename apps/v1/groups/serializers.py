@@ -1,8 +1,10 @@
-from rest_framework import serializers
-from .models import StudentGroup
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
+from .models import StudentGroup
 
 User = get_user_model()
+
 
 class StudentGroupSerializer(serializers.ModelSerializer):
     # students_list = serializers.SerializerMethodField()
@@ -23,3 +25,7 @@ class StudentGroupSerializer(serializers.ModelSerializer):
 
     def get_students_count(self, obj):
         return obj.students.count()
+
+    # def get_is_enrolled(self, obj):
+    #     user = self.context['request'].user
+    #     return obj.students.filter(id=user.id).exists()

@@ -1,10 +1,11 @@
-from pathlib import Path
 from datetime import timedelta
-from .config import ALLOWED_HOSTS, SECRET_KEY, DEBUG, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
+from pathlib import Path
+
+from .config import ALLOWED_HOSTS, SECRET_KEY, DEBUG, CSRF_TRUSTED_ORIGINS, CORS_ALLOWED_ORIGINS, EMAIL_HOST_USER, \
+    EMAIL_HOST_PASSWORD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -92,7 +93,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = "config.asgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -163,8 +163,6 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
-
-
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
