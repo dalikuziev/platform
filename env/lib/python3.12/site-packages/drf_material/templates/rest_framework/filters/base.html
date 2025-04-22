@@ -1,0 +1,43 @@
+{% load i18n %}
+
+<div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filters" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-md-3 p-lg-4 rounded-5 shadow">
+      <div class="modal-header border-bottom-0">
+        <h3 class="modal-title" id="filters">
+          {% translate "Filters" %}
+        </h3>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-grid gap-4">
+          {% for element in elements %}
+          <div>
+            {{ element }}
+          </div>
+          {% endfor %}
+          <button type="button" class="btn btn-outline-secondary rounded-5" data-mdb-dismiss="modal">
+            <span class="d-flex align-item-center justify-content-center gap-4">
+              <i class="bi bi-x-lg"></i>
+              {% translate "Cancel" %}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.querySelectorAll('#filtersModal form').forEach(e => e.classList.add("d-grid", 'gap-4'))
+    document.querySelectorAll('#filtersModal form p').forEach(e => e.classList.add("d-grid", 'm-0'))
+    document.querySelectorAll('#filtersModal form p label').forEach(e => e.classList.add("form-label"))
+    document.querySelectorAll('#filtersModal form p input').forEach(e => {
+      e.classList.add("form-control")
+      e.setAttribute('placeholder', e.getAttribute('name')[0].toUpperCase() + e.getAttribute('name').replace('_', ' ').slice(1))
+    })
+    document.querySelectorAll('#filtersModal form p select').forEach(e => {
+      e.classList.add("form-select")
+      e.setAttribute('placeholder', e.getAttribute('name')[0].toUpperCase() + e.getAttribute('name').replace('_', ' ').slice(1))
+    })
+  </script>
+</div>

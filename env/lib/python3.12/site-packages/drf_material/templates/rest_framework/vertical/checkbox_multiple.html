@@ -1,0 +1,57 @@
+{% load rest_framework %}
+
+<div class="mb-4">
+  {% if field.label %}
+    <label class="form-label{% if style.hide_label %} sr-only{% endif %}">
+      {{ field.label }}
+      {% if field.required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+  {% endif %}
+
+  <div>
+    {% if style.inline %}
+      {% for key, text in field.choices|items %}
+        <div class="form-check">
+          <input
+            id="{{ key }}"
+            type="checkbox"
+            value="{{ key }}"
+            name="{{ field.name }}"
+            class="form-check-input"
+            {% if field.required %}required{% endif %}
+            {% if key|as_string in field.value|as_list_of_strings %}checked{% endif %}
+          />
+          <label class="form-check-label" for="{{ key }}">{{ text }}</label>
+        </div>
+      {% endfor %}
+    {% else %}
+      {% for key, text in field.choices|items %}
+        <div class="form-check">
+          <input
+            id="{{ key }}"
+            type="checkbox"
+            value="{{ key }}"
+            name="{{ field.name }}"
+            class="form-check-input"
+            {% if field.required %}required{% endif %}
+            {% if key|as_string in field.value|as_list_of_strings %}checked{% endif %}
+          />
+          <label class="form-check-label" for="{{ key }}">{{ text }}</label>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="d-block text-muted">{{ field.help_text|safe }}</small>
+    {% endif %}
+
+    {% if field.errors %}
+      <div class="mt-3"></div>
+      {% for error in field.errors %}
+        <div role="alert" class="alert alert-danger mb-3">
+          <p class="mb-0">{{ error }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
