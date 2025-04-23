@@ -1,7 +1,8 @@
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from apps.v1.accounts.models import User
-from . import Course, Lesson
+from .course import Course
+from .lesson import Lesson
 from ...shared.validators import clean_past_date
 
 class IndividualTask(TimeStampedModel):

@@ -5,23 +5,19 @@ from rest_framework.response import Response
 from .models import Course, Lesson, IndividualTask
 from .permissions import IsCourseOwner
 from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
+from ..accounts.permissions import IsTeacher
 from ..groups.permissions import IsEnrolledStudent
 
 class CourseListCreateView(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsTeacher]
 
     def get_queryset(self):
         queryset = Course.objects.filter(is_active=True)
-        if self.request.user.is_authenticated:
-            if self.request.user.role == 'teacher':
-                return queryset.filter(teacher=self.request.user)
-            elif self.request.user.role == 'student':
-                return queryset.filter(students=self.request.user)
-        return queryset
+        return queryset.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(teacher=self.request.user)
-
+        serializer.save(owner=self.request.user)
 
 class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
