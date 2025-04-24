@@ -1,12 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
 from apps.v1.courses.models import Course, WeekDay
 from apps.v1.shared.validators import clean_future_date
 
 User = get_user_model()
-
 
 class StudentGroup(TimeStampedModel):
     name = models.CharField(max_length=255)
@@ -19,7 +17,6 @@ class StudentGroup(TimeStampedModel):
         related_name='enrolled_groups',
         blank=True
     )
-
     start_date = models.DateField(validators=[clean_future_date])
     lesson_days = models.ManyToManyField(
         WeekDay,
@@ -33,6 +30,5 @@ class StudentGroup(TimeStampedModel):
     )
     end_date = models.DateField(null=True, blank=True, validators=[clean_future_date])
     is_active = models.BooleanField(default=True)  # faol / tugagan
-
     def __str__(self):
         return self.name

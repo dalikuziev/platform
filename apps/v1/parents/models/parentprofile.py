@@ -1,8 +1,6 @@
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
 from apps.v1.accounts.models import User
-
 
 class ParentProfile(TimeStampedModel):
     user = models.OneToOneField(
@@ -16,6 +14,5 @@ class ParentProfile(TimeStampedModel):
         limit_choices_to={'role': 'student'}
     )
     phone = models.CharField(max_length=20)
-
     def __str__(self):
         return f"{self.user.username} (Ota-ona)"

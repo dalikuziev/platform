@@ -1,7 +1,6 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
 from config.config import ADMIN_URL
 from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT
 

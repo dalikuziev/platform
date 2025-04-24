@@ -1,10 +1,8 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
 from apps.v1.accounts.models import User
 from .submission import Submission
-
 
 class Grade(TimeStampedModel):
     submission = models.OneToOneField(
@@ -24,6 +22,5 @@ class Grade(TimeStampedModel):
         null=True,
         limit_choices_to={'role': 'teacher'}
     )
-
     def __str__(self):
         return f"{self.submission.student.username} - {self.score}"

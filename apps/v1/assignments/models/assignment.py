@@ -1,10 +1,8 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
 from apps.v1.courses.models import Lesson
 from apps.v1.shared.validators import clean_future_date
-
 
 class Assignment(TimeStampedModel):
     lesson = models.ForeignKey(
@@ -19,7 +17,6 @@ class Assignment(TimeStampedModel):
         default=100,
         validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
-
     class Meta:
         ordering = ['deadline']
 

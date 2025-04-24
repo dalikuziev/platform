@@ -1,12 +1,9 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from .models import Course, Lesson, IndividualTask
-from .permissions import IsCourseOwner
 from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
 from ..accounts.permissions import IsTeacher
-from ..groups.permissions import IsEnrolledStudent
 
 class CourseListCreateView(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
@@ -29,11 +26,23 @@ class CourseDetailView(generics.RetrieveAPIView):
         pk = self.kwargs.get('pk')
         return get_object_or_404(Course, pk=pk)
 
-
-class LessonListCreateView(generics.ListCreateAPIView):
+# class LessonListCreateView(generics.ListCreateAPIView):
+#     serializer_class = LessonSerializer
+#     # permission_classes = [IsAuthenticated, IsTeacher]
+#     def get_queryset(self):
+#         return Lesson.objects.filter(
+#             course_id=self.kwargs['course_id']
+#         ).select_related('course').prefetch_related('attachments')
+#
+#     def perform_create(self, serializer):
+#         serializer.save(course_id=self.kwargs['course_id'])
+#
+#     def get_permissions(self):
+#         if self.request.method == 'POST':
+#             return [IsAuthenticated(), IsTeacher()]
+#         return [IsAuthenticated()]
+class LessonViewSet(viewsets.ModelViewSet):
     serializer_class = LessonSerializer
-    permission_classes = [IsCourseOwner]
-
     def get_queryset(self):
         return Lesson.objects.filter(
             course_id=self.kwargs['course_id']
@@ -42,22 +51,13 @@ class LessonListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(course_id=self.kwargs['course_id'])
 
-
-class EnrollCourseView(generics.CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsEnrolledStudent]
-
-    def post(self, request, *args, **kwargs):
-        course = generics.get_object_or_404(Course, pk=kwargs['pk'])
-        course.students.add(request.user)
-        return Response(
-            {'status': 'success', 'message': 'Kursga muvaffaqiyatli yozildingiz'},
-            status=status.HTTP_200_OK
-        )
-
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAuthenticated(), IsTeacher()]
+        return [IsAuthenticated()]
 
 class IndividualTaskListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-
     def get_queryset(self):
         user = self.request.user
         if user.role == 'teacher':
@@ -71,7 +71,6 @@ class IndividualTaskListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(teacher=self.request.user)
-
 
 class IndividualTaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]

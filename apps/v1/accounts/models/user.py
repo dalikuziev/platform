@@ -8,7 +8,6 @@ phone_regex = RegexValidator(
     message="Telefon raqam quyidagi formatda bo'lishi kerak: '+998XXXXXXXXX' (masalan, +998901234567)."
 )
 
-
 class User(AbstractUser):
     ROLES = (
         ('teacher', 'Teacher'),
@@ -20,12 +19,11 @@ class User(AbstractUser):
     phone = models.CharField(validators=[phone_regex], max_length=13, blank=True)
     email = models.EmailField(null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+    is_teacher = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-
     def __str__(self):
         return f'{self.get_full_name()} ({self.role})'
-
     def clean(self):
         super().clean()
         if self.email:

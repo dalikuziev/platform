@@ -3,15 +3,14 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-
 from apps.v1.shared.admin import BaseAdmin
 from .models import User
-
+from django.contrib.auth.models import Group
+from django.contrib.admin import SimpleListFilter
 
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
-
 
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
@@ -21,7 +20,6 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     list_filter = ('role', 'is_staff', 'is_active')
     search_fields = ('username', 'email', 'phone')
     ordering = ('-date_joined', 'birth_date')
-
     # Foydalanuvchini tahrirlash formasi
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -31,7 +29,6 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
-
     # Yangi foydalanuvchi qo'shish formasi
     add_fieldsets = (
         (None, {
@@ -40,10 +37,8 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
                        'role'),
         }),
     )
-
     # Custom actions
     actions = ['make_teacher', 'make_student']
-
     @admin.action(description="Tanlangan foydalanuvchilarni o'qituvchi qilish")
     def make_teacher(self, request, queryset):
         modified = queryset.update(role='teacher')
@@ -54,37 +49,20 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
         modified = queryset.update(role='student')
         self.message_user(request, f"{modified} ta foydalanuvchi o'quvchi qilindi")
 
-
-# Django ning standart User modelini ro'yxatdan o'chirish
-from django.contrib.auth.models import Group
-
 admin.site.unregister(Group)
-
-# Custom User modelini ro'yxatdan o'tkazish
 admin.site.register(User, CustomUserAdmin)
-
-
-# 2. Maxsus Actionlar
 
 @admin.action(description="Tanlangan foydalanuvchilarni bloklash")
 def block_users(self, request, queryset):
     queryset.update(is_active=False)
 
-
 @admin.action(description="Tanlangan foydalanuvchilarni aktivlashtirish")
 def unblock_users(self, request, queryset):
     queryset.update(is_active=True)
 
-
-# 3. Qo'shimcha Filterlar
-
-from django.contrib.admin import SimpleListFilter
-
-
 class ActiveUserFilter(SimpleListFilter):
     title = 'Faollik holati'
     parameter_name = 'is_active'
-
     def lookups(self, request, model_admin):
         return (
             ('active', 'Faol foydalanuvchilar'),
@@ -97,6 +75,4 @@ class ActiveUserFilter(SimpleListFilter):
         if self.value() == 'inactive':
             return queryset.filter(is_active=False)
 
-
-# UserAdmin classiga qo'shing
 list_filter = (ActiveUserFilter, 'role', 'is_staff')

@@ -6,27 +6,21 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from .serializers import UserRegisterSerializer, UserProfileSerializer, CustomTokenObtainPairSerializer, \
     ChangePasswordSerializer
-
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
     permission_classes = (permissions.AllowAny,)
 
-
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
-
     def get_object(self):
         return self.request.user
-
 
 # class LogoutView(APIView):
 #     def post(self, request):
@@ -46,15 +40,12 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 #     def get(self, request):
 #         return Response({"message": "Change password endpoint. Please use POST."})
 
-
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
-
 
 class LogoutView(APIView):
     serializer_class = LogoutSerializer
     permission_classes = [IsAuthenticated, ]
-
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=self.request.data)
         serializer.is_valid(raise_exception=True)
@@ -70,10 +61,8 @@ class LogoutView(APIView):
         except TokenError:
             return Response(status=400)
 
-
 class UserViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
-
     @action(detail=False, methods=['post'], url_path='change-password')
     def change_password(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
@@ -81,7 +70,6 @@ class UserViewSet(viewsets.ViewSet):
             user = request.user
             if not user.check_password(serializer.validated_data['password']):
                 return Response({"password": "Noto‘g‘ri joriy parol."}, status=status.HTTP_400_BAD_REQUEST)
-
             user.set_password(serializer.validated_data['new_password'])
             user.save()
             return Response({"detail": "Parol muvaffaqiyatli o‘zgartirildi."}, status=status.HTTP_200_OK)

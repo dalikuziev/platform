@@ -12,6 +12,5 @@ class Lesson(TimeStampedModel, DraftModel):
     title = models.CharField(max_length=200)
     content = models.TextField()
     video_url = models.URLField(blank=True, null=True)
-
     def __str__(self):
         return f"{self.course.title} - {self.title}"

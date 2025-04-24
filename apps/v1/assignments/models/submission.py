@@ -1,9 +1,7 @@
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-
 from apps.v1.accounts.models import User
 from .assignment import Assignment
-
 
 class Submission(TimeStampedModel):
     assignment = models.ForeignKey(
@@ -19,10 +17,8 @@ class Submission(TimeStampedModel):
     )
     file = models.FileField(upload_to='submissions/%Y/%m/%d/')
     answer = models.TextField()
-
     class Meta:
         unique_together = ('assignment', 'student',)
-
     def save(self, *args, **kwargs):
         if None in (self.created, self.assignment.deadline):
             self.is_late = False

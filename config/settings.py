@@ -212,6 +212,9 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
 }
 # Collect static files here
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -221,3 +224,5 @@ STATIC_URL = '/static/'
 
 # Use compressed static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+APPEND_SLASH=False

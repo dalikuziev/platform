@@ -1,9 +1,7 @@
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from .models import Grade
-
 
 @receiver(post_save, sender=Grade)
 def send_grade_notification(sender, instance, created, **kwargs):
@@ -14,7 +12,6 @@ def send_grade_notification(sender, instance, created, **kwargs):
         message += f"Baholovchi: {instance.graded_by.username}\n"
         message += f"Izoh: {instance.feedback}\n\n" if instance.feedback else ""
         message += "EduPlatform jamoasi"
-
         recipient_email = instance.submission.student.email
         send_mail(
             subject,

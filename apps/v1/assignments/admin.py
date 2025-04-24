@@ -1,10 +1,8 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-
 from apps.v1.shared.admin import BaseAdmin
 from .models import Assignment, Submission, Grade
-
 
 class SubmissionInline(admin.TabularInline):
     model = Submission
@@ -12,27 +10,22 @@ class SubmissionInline(admin.TabularInline):
     readonly_fields = ('created',)
     show_change_link = True
 
-
 class GradeInline(admin.StackedInline):
     model = Grade
     extra = 0
     readonly_fields = ('created',)
 
-
 class AssignmentResource(resources.ModelResource):
     class Meta:
         model = Assignment
-
 
 class SubmissionResource(resources.ModelResource):
     class Meta:
         model = Submission
 
-
 class GradeResource(resources.ModelResource):
     class Meta:
         model = Grade
-
 
 @admin.register(Assignment)
 class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
@@ -42,7 +35,6 @@ class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
     search_fields = ('title', 'lesson__title')
     inlines = [SubmissionInline]
 
-
 @admin.register(Submission)
 class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [SubmissionResource]
@@ -50,7 +42,6 @@ class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
     list_filter = ('assignment__lesson__course',)
     search_fields = ('student__username', 'assignment__title')
     inlines = [GradeInline]
-
 
 @admin.register(Grade)
 class GradeAdmin(BaseAdmin, ImportExportModelAdmin):
