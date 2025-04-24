@@ -12,7 +12,7 @@ router.register('individual-tasks', IndividualTaskViewSet, basename='individual-
 
 urlpatterns = [
     path('', CourseListCreateView.as_view(), name='course-list'),
-    path('<int:pk>', CourseDetailView.as_view(), name='course-detail'),
-    path('<int:course_id>/lessons', LessonListCreateView.as_view(), name='lesson-list'),
+    path('<int:pk>/', CourseDetailView.as_view(), name='course-detail'),
+    path('<int:course_id>/lessons/', LessonListCreateView.as_view(), name='lesson-list'),
 ]
 urlpatterns += router.urls

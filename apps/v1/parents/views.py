@@ -11,6 +11,7 @@ from .serializers import (
     StudentReportSerializer,
     ReportGenerateSerializer
 )
+from ..accounts.permissions import IsParent
 
 class ParentProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ParentProfileSerializer
@@ -23,7 +24,7 @@ class ParentProfileView(generics.RetrieveUpdateAPIView):
 
 class ChildrenReportsView(generics.ListAPIView):
     serializer_class = StudentReportSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsParent]
     def get_queryset(self):
         parent = get_object_or_404(
             ParentProfile,

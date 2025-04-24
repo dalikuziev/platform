@@ -12,7 +12,6 @@ from ..accounts.permissions import IsTeacherOrAdmin
 User = get_user_model()
 
 class StudentGroupViewSet(viewsets.ModelViewSet):
-    queryset = StudentGroup.objects.all().prefetch_related('students', 'lesson_days')
     serializer_class = StudentGroupSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -20,6 +19,11 @@ class StudentGroupViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     ordering_fields = ['start_date', 'end_date', 'students__count']
     ordering = ['-start_date']
+
+    def get_queryset(self):
+        teacher = self.request.user
+        queryset = StudentGroup.objects.filter(teacher=teacher).prefetch_related('students', 'lesson_days')
+        return queryset
 
 class EnrollGroupView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsTeacherOrAdmin]
@@ -30,11 +34,11 @@ class EnrollGroupView(APIView):
             return Response({'error': 'group_id va student_id majburiy'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             group = StudentGroup.objects.get(id=group_id)
-            student = User.objects.get(id=student_id, role='student')
+            student = User.objects.get(id=student_id, role__in=['student', 'teacher'])
         except StudentGroup.DoesNotExist:
             return Response({'error': 'Group topilmadi'}, status=status.HTTP_404_NOT_FOUND)
         except User.DoesNotExist:
-            return Response({'error': 'Student topilmadi yoki role noto‘g‘ri'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Student topilmadi'}, status=status.HTTP_404_NOT_FOUND)
         if student in group.students.all():
             return Response({'error': 'Student allaqachon guruhga qo‘shilgan'}, status=status.HTTP_400_BAD_REQUEST)
         group.students.add(student)
