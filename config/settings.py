@@ -225,4 +225,4 @@ STATIC_URL = '/static/'
 # Use compressed static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-APPEND_SLASH=False
+APPEND_SLASH=True

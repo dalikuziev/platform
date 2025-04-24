@@ -8,7 +8,7 @@ class IsCourseTeacher(BasePermission):
 
 class IsGroupTeacher(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.role == 'teacher'
+        return request.user.role == 'teacher' and request.submission.student
 
 class IsEnrolledStudent(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):

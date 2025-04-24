@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from apps.v1.accounts.serializers import UserSerializer
 from .models import Course, Lesson, LessonAttachment, IndividualTask
 
@@ -30,15 +32,15 @@ class CourseSerializer(serializers.ModelSerializer):
         read_only_fields = ['owner']
 
 class IndividualTaskSerializer(serializers.ModelSerializer):
-    teacher = serializers.StringRelatedField()
-    student = serializers.StringRelatedField()
-    course = serializers.StringRelatedField()
-    lesson = serializers.StringRelatedField()
-    deadline = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    # teacher = serializers.StringRelatedField()
+    # student = serializers.StringRelatedField()
+    # course = serializers.StringRelatedField()
+    # lesson = serializers.StringRelatedField()
+    # deadline = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
     class Meta:
         model = IndividualTask
         fields = '__all__'
-        read_only_fields = ['teacher', 'created', 'modified']
+        read_only_fields = ['teacher']
 
 class IndividualTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,13 +48,13 @@ class IndividualTaskCreateSerializer(serializers.ModelSerializer):
     fields = '__all__'
     def validate(self, data):
         # O'qituvchi kurs o'qituvchisi ekanligini tekshiramiz
-        if self.context['request'].user != data['course'].teacher:
+        if self.context['request'].user != data['group'].teacher:
             raise serializers.ValidationError(
                 "Faqat kurs o'qituvchisi topshiriq berishi mumkin"
             )
         # O'quvchi kursda ekanligini tekshiramiz
         if not data['course'].students.filter(id=data['student'].id).exists():
-            raise serializers.ValidationError(
+            raise ValidationError(
                 "O'quvchi kursda ro'yxatdan o'tmagan"
             )
         return data

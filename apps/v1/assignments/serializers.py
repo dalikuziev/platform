@@ -4,13 +4,13 @@ from apps.v1.courses.serializers import LessonSerializer
 from .models import Assignment, Submission, Grade
 
 class AssignmentSerializer(serializers.ModelSerializer):
-    lesson = LessonSerializer(read_only=True)
+    # lesson = LessonSerializer(read_only=True)
     is_submitted = serializers.SerializerMethodField()
     submission_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Assignment
         fields = '__all__'
-        read_only_fields = ('created', 'modified')
+        # read_only_fields = ('created', 'modified')
 
     def get_is_submitted(self, obj):
         request = self.context.get('request')
@@ -34,4 +34,4 @@ class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = '__all__'
-        read_only_fields = ('created',)
+        # read_only_fields = ('created',)

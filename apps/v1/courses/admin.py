@@ -75,12 +75,12 @@ class LessonAttachmentAdmin(BaseAdmin, ImportExportModelAdmin):
 class IndividualTaskAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [WeekDayResource]
     list_display = [f.name for f in IndividualTask._meta.fields]
-    list_filter = ('course', 'teacher')
+    list_filter = ('group', 'teacher')
     search_fields = ('title', 'description', 'student__username')
     readonly_fields = ('created', 'modified')
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(BaseAdmin, ImportExportModelAdmin):
     list_display = [f.name for f in Enrollment._meta.fields]
-    list_filter = ('course',)
-    search_fields = ('student__username', 'student__first_name', 'student__last_name', 'course__title')
+    list_filter = ('group',)
+    search_fields = ('student__username', 'student__first_name', 'student__last_name', 'group__name')

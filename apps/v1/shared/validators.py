@@ -1,9 +1,12 @@
 from datetime import date, datetime
 from django.core.exceptions import ValidationError
+from icecream import ic
+
 
 def clean_past_date(value):
     if isinstance(value, datetime):
         value = value.date()  # datetime ni date turiga o‘tkazamiz
+        ic(value)
     if value < date.today():
         raise ValidationError("Sana o‘tgan kun bo‘lishi mumkin emas!")
     return value
