@@ -21,7 +21,7 @@ no-db:
 re-django:
 	pip3 uninstall Django -y && pip3 install Django
 re-mig:
-	make no-db && make clear && make re-django && make mig && make cru && make run
+	make no-db && make clear && make re-django && make mig && make cru && make run-asgi
 run-wsgi:
 	python3 manage.py runserver 0.0.0.0:8000
 startapp:

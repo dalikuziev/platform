@@ -1,6 +1,6 @@
 import os
-from environs import Env
 
+from environs import Env
 
 env = Env()
 
@@ -27,3 +27,4 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+API_V1_URL = env.str('API_V1_URL')

@@ -1,1 +1,0 @@
-from .studentgroup import StudentGroup
