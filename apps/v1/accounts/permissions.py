@@ -23,4 +23,4 @@ class IsTeacherOrAdmin(permissions.BasePermission):
 
 class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        return bool(request.user and request.user.role == 'admin')
+        return request.user and request.user.is_authenticated and request.user.role == 'admin'
