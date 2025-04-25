@@ -7,7 +7,8 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['password']
+        # exclude = ['password']
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone')
         read_only_fields = ['role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -23,7 +24,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('username', 'password', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role')
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -41,7 +42,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['password']
+        # exclude = ['password']
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone', 'date_joined')
         read_only_fields = ('role',)
         extra_kwargs = {
             'email': {'required': False},
