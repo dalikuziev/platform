@@ -19,7 +19,6 @@ class User(AbstractUser):
     phone = models.CharField(validators=[phone_regex], max_length=13, blank=True)
     email = models.EmailField(null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    is_teacher = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
     def __str__(self):
