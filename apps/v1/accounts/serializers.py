@@ -7,8 +7,8 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone']
-        read_only_fields = ['id', 'role']
+        exclude = ['password']
+        read_only_fields = ['role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """JWT tokeniga qo'shimcha maydonlar (role) qo'shish"""
@@ -23,7 +23,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role')
+        fields = '__all__'
+
     def create(self, validated_data):
         user = User.objects.create_user(
             username=validated_data['username'],
@@ -40,8 +41,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone', 'date_joined')
-        read_only_fields = ('id', 'role', 'date_joined',)
+        exclude = ['password']
+        read_only_fields = ('role',)
         extra_kwargs = {
             'email': {'required': False},
             'phone': {'required': False},

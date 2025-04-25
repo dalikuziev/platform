@@ -1,30 +1,30 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from .models import Course, Lesson, IndividualTask
 from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
 from ..accounts.permissions import IsTeacher
 
-class CourseListCreateView(generics.ListCreateAPIView):
+class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsTeacher]
 
     def get_queryset(self):
-        queryset = Course.objects.filter(is_active=True)
-        return queryset.filter(owner=self.request.user)
+        return Course.objects.filter(is_active=True, owner=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class CourseDetailView(generics.RetrieveAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        # ID ni URL dan olish
-        pk = self.kwargs.get('pk')
-        return get_object_or_404(Course, pk=pk)
+    def retrieve(self, request, *args, **kwargs):
+        # Faqat o‘ziga tegishli bo‘lgan kursni olish
+        instance = get_object_or_404(
+            Course.objects.filter(owner=request.user, is_active=True),
+            pk=kwargs.get("pk")
+        )
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class LessonListCreateView(generics.ListCreateAPIView):
     serializer_class = LessonSerializer

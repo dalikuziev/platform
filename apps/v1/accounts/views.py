@@ -22,24 +22,6 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-# class LogoutView(APIView):
-#     def post(self, request):
-#         try:
-#             refresh_token = request.data.get("refresh")
-#             token = RefreshToken(refresh_token)
-#             token.blacklist()
-#             return Response(
-#                 {"detail": "Muvaffaqiyatli chiqish amalga oshirildi"},
-#                 status=status.HTTP_200_OK
-#             )
-#         except Exception as e:
-#             return Response(
-#                 {"detail": str(e)},
-#                 status=status.HTTP_400_BAD_REQUEST
-#             )
-#     def get(self, request):
-#         return Response({"message": "Change password endpoint. Please use POST."})
-
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
