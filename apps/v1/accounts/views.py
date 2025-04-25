@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions, status, viewsets, serializers
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
@@ -11,7 +11,7 @@ from .serializers import UserRegisterSerializer, UserProfileSerializer, CustomTo
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated, IsAdminUser)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
