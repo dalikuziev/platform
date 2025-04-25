@@ -15,7 +15,7 @@ from ..accounts.permissions import IsParent
 
 class ParentProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ParentProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsParent]
     def get_object(self):
         return get_object_or_404(
             ParentProfile,
