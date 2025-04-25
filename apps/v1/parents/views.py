@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, status, permissions
+from icecream import ic
+from rest_framework import generics, status, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.v1.accounts.models import User
@@ -13,9 +14,20 @@ from .serializers import (
 )
 from ..accounts.permissions import IsParent
 
+# class ParentProfileViewSet(viewsets.ModelViewSet):
+#     serializer_class = ParentProfileSerializer
+#     permission_classes = [permissions.IsAuthenticated, IsParent]
+#     http_method_names = ['get']
+#
+#     def get_object(self):
+#         return get_object_or_404(
+#             ParentProfile,
+#             user=self.request.user
+#         )
 class ParentProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ParentProfileSerializer
-    permission_classes = [permissions.IsAuthenticated, IsParent]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get_object(self):
         return get_object_or_404(
             ParentProfile,
