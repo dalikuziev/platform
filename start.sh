@@ -42,4 +42,4 @@ echo "================================="
 
 # Start the Uvicorn ASGI server
 echo "Starting Uvicorn ASGI server..."
-make run-asgi
+make run-wsgi

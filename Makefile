@@ -23,7 +23,7 @@ re-django:
 re-mig:
 	make no-db && make clear && make re-django && make mig && make cru && make run-asgi
 run-wsgi:
-	python3 manage.py runserver 0.0.0.0:8000
+	gunicorn config.wsgi:application --bind 0.0.0.0:8000
 startapp:
 	python3 manage.py startapp $(name) && mv $(name) apps/$(name)
 clear-linux:
@@ -37,3 +37,5 @@ collect:
 	python3 manage.py collectstatic --noinput
 open-bash:
 	docker exec -it drf_api bash
+run:
+	python3 manage.py runserver 0.0.0.0:8000
