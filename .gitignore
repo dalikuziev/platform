@@ -66,8 +66,6 @@ staticfiles/
 # Ignore Django migration files
 !*/migrations/__init__.py
 !**/migrations/__init__.py
-**/migrations/*.py
-**/migrations/*.pyc
 
 # Flask stuff:
 instance/
