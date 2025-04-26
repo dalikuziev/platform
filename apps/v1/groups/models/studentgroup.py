@@ -10,7 +10,6 @@ class StudentGroup(TimeStampedModel):
     name = models.CharField(max_length=255)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentgroups', limit_choices_to={'role': 'teacher'})
-    # owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='groups')
     students = models.ManyToManyField(User, limit_choices_to={'role__in': ['student', 'teacher']}, related_name='enrolled_groups', blank=True)
     start_date = models.DateField(validators=[clean_future_date])
     lesson_days = models.ManyToManyField(WeekDay, blank=True)
