@@ -7,13 +7,10 @@ from apps.v1.shared.serializers import BaseCleanSerializer
 User = get_user_model()
 
 class UserSerializer(BaseCleanSerializer):
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = User
-        # exclude = ['password']
-        # fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone')
-        # fields = '__all__'
-        exclude = ('password', 'groups', 'user_permissions', 'is_staff', 'is_superuser')
-        read_only_fields = ['role']
+        exclude = ('groups', 'user_permissions', 'is_staff', 'is_superuser')
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """JWT tokeniga qo'shimcha maydonlar (role) qo'shish"""
@@ -29,7 +26,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email')
+        # fields = ('username', 'password', 'email')
+        exclude = ('email',)
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
