@@ -23,3 +23,4 @@ uvicorn
 whitenoise
 gunicorn
 django-debug-toolbar
+djangorestframework-role-filters

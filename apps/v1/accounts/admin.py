@@ -15,8 +15,8 @@ class UserResource(resources.ModelResource):
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
     # Ro'yxat ko'rinishi
-    list_display = [f.name for f in User._meta.fields]
-    list_display.remove('password')
+    list_display = [f.name for f in User._meta.fields if f.name not in ('password', 'groups', 'user_permissions', 'is_staff', 'is_superuser')]
+    # list_display.remove('password')
     list_filter = ('role', 'is_staff', 'is_active')
     search_fields = ('username', 'email', 'phone')
     ordering = ('-date_joined', 'birth_date')

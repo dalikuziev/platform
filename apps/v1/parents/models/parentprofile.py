@@ -13,6 +13,5 @@ class ParentProfile(TimeStampedModel):
         related_name='parents',
         limit_choices_to={'role': 'student'}
     )
-    phone = models.CharField(max_length=20)
     def __str__(self):
         return f"{self.user.username} (Ota-ona)"

@@ -2,13 +2,17 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from apps.v1.shared.serializers import BaseCleanSerializer
+
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(BaseCleanSerializer):
     class Meta:
         model = User
         # exclude = ['password']
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone')
+        # fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone')
+        # fields = '__all__'
+        exclude = ('password', 'groups', 'user_permissions', 'is_staff', 'is_superuser')
         read_only_fields = ['role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -20,24 +24,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    """Ro'yxatdan o'tish uchun serializer"""
+    """Simplified registration serializer"""
     password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role')
-
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            role=validated_data['role'],
-            phone=validated_data['phone'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            birth_date=validated_data['birth_date'],
-        )
-        return user
+        fields = ('username', 'password', 'email')
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
