@@ -7,3 +7,7 @@ class IsParentOfStudent(permissions.BasePermission):
         parent_profile = request.user.parent_profile
         student_id = view.kwargs.get('student_id') or request.data.get('student_id')
         return parent_profile.children.filter(id=student_id).exists()
+
+class IsAdmin2(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return bool(request.user and request.user.role == 'admin')

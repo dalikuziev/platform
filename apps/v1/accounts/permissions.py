@@ -14,7 +14,7 @@ class IsParent(permissions.BasePermission):
     Allows access only to parents.
     """
     def has_permission(self, request, view):
-        ic(request.user.__dict__)
+        # ic(request.user.__dict__)
         return bool(request.user and request.user.role == 'parents')
 
 class IsTeacherOrAdmin(permissions.BasePermission):
