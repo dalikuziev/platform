@@ -190,20 +190,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
-LOGGING = {
-    "version": 1,
-    "handlers": {
-        "console": {"level": "DEBUG", "class": "logging.StreamHandler"},
-    },
-    "loggers": {
-        "django.db.backends": {"level": "INFO", "handlers": ["console"]},
-        "import_export": {
-            "handlers": ["console"],
-            "level": "INFO",
-        },
-    },
-}
-
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",

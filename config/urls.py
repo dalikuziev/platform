@@ -12,11 +12,11 @@ urlpatterns = [
 
 api_urls = [
     path(API_V1_URL+'auth/', include('apps.v1.accounts.urls')),
-    # path(API_V1_URL+'courses/', include('apps.v1.courses.urls')),
-    # path(API_V1_URL+'assignments/', include('apps.v1.assignments.urls')),
-    # path(API_V1_URL+'parents/', include('apps.v1.parents.urls')),
-    # path(API_V1_URL+'payments/', include('apps.v1.payments.urls')),
-    # path(API_V1_URL+'groups/', include('apps.v1.groups.urls')),
+    path(API_V1_URL+'courses/', include('apps.v1.courses.urls')),
+    path(API_V1_URL+'assignments/', include('apps.v1.assignments.urls')),
+    path(API_V1_URL+'parents/', include('apps.v1.parents.urls')),
+    path(API_V1_URL+'payments/', include('apps.v1.payments.urls')),
+    path(API_V1_URL+'groups/', include('apps.v1.groups.urls')),
 ]
 
 spectacular_urls = [
