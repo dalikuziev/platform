@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from apps.v1.accounts.models import User
 from .submission import Submission
+
+User = get_user_model()
 
 class Grade(TimeStampedModel):
     submission = models.OneToOneField(

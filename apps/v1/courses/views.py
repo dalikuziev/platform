@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 from .models import Course, Lesson, IndividualTask
 from .serializers import CourseSerializer, LessonSerializer, IndividualTaskSerializer, IndividualTaskCreateSerializer
 from ..accounts.permissions import IsTeacher

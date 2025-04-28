@@ -1,7 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from apps.v1.accounts.models import User
 from .assignment import Assignment
+
+User = get_user_model()
 
 class Submission(TimeStampedModel):
     assignment = models.ForeignKey(

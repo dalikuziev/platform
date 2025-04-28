@@ -32,11 +32,6 @@ class CourseSerializer(serializers.ModelSerializer):
         read_only_fields = ['owner']
 
 class IndividualTaskSerializer(serializers.ModelSerializer):
-    # teacher = serializers.StringRelatedField()
-    # student = serializers.StringRelatedField()
-    # course = serializers.StringRelatedField()
-    # lesson = serializers.StringRelatedField()
-    # deadline = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
     class Meta:
         model = IndividualTask
         fields = '__all__'

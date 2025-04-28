@@ -6,14 +6,17 @@ from rest_framework.response import Response
 from apps.v1.groups.permissions import IsEnrolledStudent, IsGroupTeacher
 from .models import Assignment, Grade
 from .serializers import AssignmentSerializer, SubmissionSerializer, GradeSerializer
+from ..accounts.permissions import IsTeacher, IsTeacherAndCourseOwner
 from ..courses.permissions import IsCourseOwner
 from .models import Submission
 
 class AssignmentListCreateView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
-    permission_classes = [IsAuthenticated, IsCourseOwner]
+    permission_classes = [IsAuthenticated, IsTeacherAndCourseOwner]
     def get_queryset(self):
+        ic(self.kwargs)
         lesson_id = self.kwargs['lesson_id']
+        ic(Assignment.objects.all().filter(lesson_id=lesson_id))
         return Assignment.objects.filter(lesson__course__owner=self.request.user, lesson_id=lesson_id)
 
 class SubmissionCreateView(generics.CreateAPIView):
@@ -40,6 +43,36 @@ class SubmissionCreateView(generics.CreateAPIView):
         }
         submission = Submission.objects.create(**data)
         return Response(SubmissionSerializer(submission).data, status=status.HTTP_201_CREATED)
+# class SubmissionCreateView(generics.CreateAPIView):
+#     queryset = Submission.objects.all()
+#     serializer_class = SubmissionSerializer
+#     permission_classes = [IsAuthenticated, IsEnrolledStudent]
+#
+#     def create(self, request, *args, **kwargs):
+#         assignment_id = request.data.get('assignment')
+#         if not assignment_id:
+#             raise ValidationError({'error': 'Assignment not found'})
+#
+#         try:
+#             assignment = Assignment.objects.get(id=assignment_id)
+#         except Assignment.DoesNotExist:
+#             return Response({'error': 'Assignment not found.'}, status=status.HTTP_404_NOT_FOUND)
+#
+#         if Submission.objects.filter(assignment=assignment, student=request.user).exists():
+#             raise ValidationError({'error': 'Siz bu topshiriqni allaqachon yuklagansiz.'})
+#
+#         serializer = self.get_serializer(data={
+#             'file': request.data.get('file'),
+#             'answer': request.data.get('answer'),
+#             'assignment': assignment.id,
+#             'student': request.user.id,
+#         })
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#
+#     def perform_create(self, serializer):
+#         serializer.save()
 
 class GradeCreateUpdateView(generics.CreateAPIView, generics.UpdateAPIView):
     serializer_class = GradeSerializer

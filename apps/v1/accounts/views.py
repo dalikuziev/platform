@@ -63,7 +63,7 @@ class UserViewSet(viewsets.ModelViewSet):
             user = request.user
             if not user.check_password(serializer.validated_data['password']):
                 return Response(
-                    {"password": "Noto‘g‘ri joriy parol."},
+                    {"password": "Joriy parol noto‘g‘ri."},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             user.set_password(serializer.validated_data['new_password'])
