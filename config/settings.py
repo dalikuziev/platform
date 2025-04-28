@@ -35,8 +35,8 @@ INSTALLED_APPS = [
 
 THIRD_APPS = {
     'drf_material',
-    # 'drf_spectacular',
-    # 'drf_spectacular_sidecar',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
