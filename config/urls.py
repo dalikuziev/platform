@@ -19,14 +19,14 @@ api_urls = [
     path(API_V1_URL+'groups/', include('apps.v1.groups.urls')),
 ]
 
-spectacular_urls = [
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # Optional UI:
-    path(SWAGGER_URL, SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-]
+# spectacular_urls = [
+#     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+#     # Optional UI:
+#     path(SWAGGER_URL, SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+# ]
 
 urlpatterns += api_urls
-urlpatterns += spectacular_urls
+# urlpatterns += spectacular_urls
 
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)

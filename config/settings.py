@@ -35,8 +35,8 @@ INSTALLED_APPS = [
 
 THIRD_APPS = {
     'drf_material',
-    'drf_spectacular',
-    'drf_spectacular_sidecar',
+    # 'drf_spectacular',
+    # 'drf_spectacular_sidecar',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -174,15 +174,15 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Edu Platform API',
-    'DESCRIPTION': 'CRM for education centers',
-    'VERSION': '0.0.1',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'SWAGGER_UI_DIST': 'SIDECAR',
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR',
-}
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'Edu Platform API',
+#     'DESCRIPTION': 'CRM for education centers',
+#     'VERSION': '0.0.1',
+#     'SERVE_INCLUDE_SCHEMA': False,
+#     'SWAGGER_UI_DIST': 'SIDECAR',
+#     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+#     'REDOC_DIST': 'SIDECAR',
+# }
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
