@@ -35,8 +35,6 @@ INSTALLED_APPS = [
 
 THIRD_APPS = {
     'drf_material',
-    # 'drf_spectacular',
-    # 'drf_spectacular_sidecar',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -47,8 +45,8 @@ THIRD_APPS = {
     'django_filters',
     'rest_framework.authtoken',
     'debug_toolbar',
-    # 'drf_spectacular',
-    # 'drf_spectacular_sidecar',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 }
 
 LOCAL_APPS = [
@@ -169,20 +167,20 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',  # Needed for file uploads
     ),
     'NON_FIELD_ERRORS_KEY': 'error',
-    # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
 
-# SPECTACULAR_SETTINGS = {
-#     'TITLE': 'Edu Platform API',
-#     'DESCRIPTION': 'CRM for education centers',
-#     'VERSION': '0.0.1',
-#     'SERVE_INCLUDE_SCHEMA': False,
-#     'SWAGGER_UI_DIST': 'SIDECAR',
-#     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-#     'REDOC_DIST': 'SIDECAR',
-# }
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Edu Platform API',
+    'DESCRIPTION': 'CRM for education centers',
+    'VERSION': '0.0.1',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+}
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
