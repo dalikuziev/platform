@@ -47,8 +47,8 @@ THIRD_APPS = {
     'django_filters',
     'rest_framework.authtoken',
     'debug_toolbar',
-    'drf_spectacular',
-    'drf_spectacular_sidecar',
+    # 'drf_spectacular',
+    # 'drf_spectacular_sidecar',
 }
 
 LOCAL_APPS = [
