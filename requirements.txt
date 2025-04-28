@@ -11,8 +11,6 @@ djangorestframework
 djangorestframework-simplejwt
 drf-material
 drf-nested-routers
-drf-spectacular
-drf-spectacular-sidecar
 environs
 git-filter-repo
 icecream
