@@ -23,8 +23,13 @@ class StudentReport(TimeStampedModel):
     )
     completed_assignments = models.PositiveIntegerField()
     total_assignments = models.PositiveIntegerField()
-    teacher_comments = models.TextField(blank=True)
-    is_published = models.BooleanField(default=False)
+    teacher_comments = models.TextField(
+        null=True,
+        blank=True
+    )
+    is_published = models.BooleanField(
+        default=False
+    )
     class Meta:
         unique_together = ('student', 'course')
         ordering = ['-created']

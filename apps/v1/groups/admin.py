@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from apps.v1.shared.admin import BaseAdmin
-from .models import StudentGroup
+from .models import StudentGroup, WeekDay
 
 User = get_user_model()
 
@@ -22,6 +22,14 @@ class StudentGroupForm(forms.ModelForm):
 class StudentGroupResource(resources.ModelResource):
     class Meta:
         model = StudentGroup
+
+class WeekDayResource(resources.ModelResource):
+    class Meta:
+        model = WeekDay
+
+@admin.register(WeekDay)
+class WeekDayAdmin(admin.ModelAdmin):
+    resource_classes = [WeekDayResource]
 
 @admin.register(StudentGroup)
 class StudentGroupAdmin(ImportExportModelAdmin, BaseAdmin):

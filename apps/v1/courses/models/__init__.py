@@ -1,4 +1,4 @@
-from .course import Course, WeekDay
+from .course import Course
 from .individualtask import IndividualTask
 from .lesson import Lesson
 from .lessonattachment import LessonAttachment

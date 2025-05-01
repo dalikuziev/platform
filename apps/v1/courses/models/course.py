@@ -4,24 +4,6 @@ from django_extensions.db.models import TimeStampedModel
 
 User = get_user_model()
 
-class WeekDay(TimeStampedModel):
-    DAY_CHOICES = (
-        ('Monday', 'Monday'),
-        ('Tuesday', 'Tuesday'),
-        ('Wednesday', 'Wednesday'),
-        ('Thursday', 'Thursday'),
-        ('Friday', 'Friday'),
-        ('Saturday', 'Saturday'),
-        ('Sunday', 'Sunday'),
-    )
-    day = models.CharField(
-        max_length=30,
-        choices=DAY_CHOICES,
-        unique=True
-    )
-    def __str__(self):
-        return self.day
-
 class Course(TimeStampedModel):
     title = models.CharField(
         unique=True,

@@ -12,10 +12,26 @@ class Payment(TimeStampedModel):
         ('card', 'Card'),
         ('cash', 'Cash'),
     ]
-    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments', limit_choices_to={'role': 'student'})
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_type = models.CharField(max_length=50, choices=PAYMENT_TYPES)
-    paid_at = models.DateTimeField(default=timezone.now, validators=[clean_future_date])
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='payments',
+        limit_choices_to={
+            'role': 'student'
+        }
+    )
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    payment_type = models.CharField(
+        max_length=50,
+        choices=PAYMENT_TYPES
+    )
+    paid_at = models.DateTimeField(
+        default=timezone.now,
+        validators=[clean_future_date]
+    )
     def clean(self):
         if self.student.role != 'student':
             raise ValidationError("Faqat studentlar uchun to'lov yaratilishi mumkin.")

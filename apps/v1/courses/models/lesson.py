@@ -12,7 +12,7 @@ class Lesson(TimeStampedModel, DraftModel):
     title = models.CharField(
         max_length=200
     )
-    content = models.TextField(
+    description = models.TextField(
         null=True,
         blank=True
     )

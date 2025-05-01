@@ -37,7 +37,10 @@ class IndividualTask(TimeStampedModel):
     title = models.CharField(
         max_length=255
     )
-    description = models.TextField()
+    description = models.TextField(
+        null=True,
+        blank=True
+    )
     deadline = models.DateTimeField(
         validators=[clean_past_date]
     )
