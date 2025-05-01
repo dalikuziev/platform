@@ -26,13 +26,12 @@ class IndividualTask(TimeStampedModel):
             'role': 'teacher'
         },
     )
-    student = models.ForeignKey(
+    students = models.ManyToManyField(
         User,
-        on_delete=models.CASCADE,
-        related_name='individual_tasks',
         limit_choices_to={
             'role': 'student'
         },
+        related_name='individual_tasks',
     )
     title = models.CharField(
         max_length=255
@@ -46,6 +45,6 @@ class IndividualTask(TimeStampedModel):
     )
     class Meta:
         ordering = ['-created']
-        unique_together = ['group', 'student', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
+        unique_together = ['group', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
     def __str__(self):
         return f"{self.title} - {self.student.username}"
