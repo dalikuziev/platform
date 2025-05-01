@@ -1,15 +1,17 @@
 from django.contrib.auth import get_user_model
+from icecream import ic
 from rest_framework import generics, permissions, status, viewsets, serializers
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import TokenError
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .permissions import IsAdmin
 from .serializers import UserRegisterSerializer, UserProfileSerializer, CustomTokenObtainPairSerializer, \
-    ChangePasswordSerializer, UserSerializer
+    ChangePasswordSerializer, UserSerializer, LogoutSerializer
 
 User = get_user_model()
 
@@ -26,12 +28,10 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-class LogoutSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-
 class LogoutView(APIView):
     serializer_class = LogoutSerializer
     permission_classes = [IsAuthenticated, ]
+
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=self.request.data)
         serializer.is_valid(raise_exception=True)

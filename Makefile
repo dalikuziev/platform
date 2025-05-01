@@ -13,7 +13,7 @@ mig:
 cru:
 	python3 manage.py createsuperuser --username=dalikuziev --email=dalikuziev@gmail.com
 run-asgi:
-	uvicorn config.asgi:application --host 0.0.0.0 --port 8001 --reload
+	uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload
 clear:
 	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete
 no-db:
@@ -23,7 +23,7 @@ re-django:
 re-mig:
 	make no-db && make clear && make re-django && make mig && make cru && make run-asgi
 run-wsgi:
-	gunicorn config.wsgi:application --bind 0.0.0.0:8001
+	gunicorn config.wsgi:application --bind 0.0.0.0:8000
 startapp:
 	python3 manage.py startapp $(name) && mv $(name) apps/$(name)
 clear-linux:
@@ -38,4 +38,4 @@ collect:
 open-bash:
 	docker exec -it drf_api bash
 run:
-	python3 manage.py runserver 0.0.0.0:8001
+	python3 manage.py runserver 0.0.0.0:8000
