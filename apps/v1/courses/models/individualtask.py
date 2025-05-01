@@ -22,17 +22,25 @@ class IndividualTask(TimeStampedModel):
         User,
         on_delete=models.CASCADE,
         related_name='assigned_tasks',
-        limit_choices_to={'role': 'teacher'},
+        limit_choices_to={
+            'role': 'teacher'
+        },
     )
     student = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='individual_tasks',
-        limit_choices_to={'role': 'student'},
+        limit_choices_to={
+            'role': 'student'
+        },
     )
-    title = models.CharField(max_length=255)
+    title = models.CharField(
+        max_length=255
+    )
     description = models.TextField()
-    deadline = models.DateTimeField(validators=[clean_past_date])
+    deadline = models.DateTimeField(
+        validators=[clean_past_date]
+    )
     class Meta:
         ordering = ['-created']
         unique_together = ['group', 'student', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta

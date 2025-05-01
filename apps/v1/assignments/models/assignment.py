@@ -10,9 +10,16 @@ class Assignment(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name='assignments'
     )
-    title = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True)
-    deadline = models.DateTimeField(validators=[clean_past_date])
+    title = models.CharField(
+        max_length=200
+    )
+    description = models.TextField(
+        null=True,
+        blank=True
+    )
+    deadline = models.DateTimeField(
+        validators=[clean_past_date]
+    )
     max_score = models.PositiveIntegerField(
         default=100,
         validators=[MinValueValidator(1), MaxValueValidator(100)]

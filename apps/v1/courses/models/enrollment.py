@@ -6,5 +6,15 @@ from ...groups.models import StudentGroup
 User = get_user_model()
 
 class Enrollment(TimeStampedModel):
-    group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE, related_name="enrollments")
-    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={"role": "student"})
+    group = models.ForeignKey(
+        StudentGroup,
+        on_delete=models.CASCADE,
+        related_name="enrollments"
+    )
+    student = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={
+            "role": "student"
+        }
+    )

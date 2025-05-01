@@ -14,11 +14,18 @@ class Submission(TimeStampedModel):
     student = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        limit_choices_to={'role': 'student'},
+        limit_choices_to={
+            'role': 'student'
+        },
         related_name='submissions'
     )
-    file = models.FileField(upload_to='submissions/%Y/%m/%d/')
-    answer = models.TextField(null=True, blank=True)
+    file = models.FileField(
+        upload_to='submissions/%Y/%m/%d/'
+    )
+    answer = models.TextField(
+        null=True,
+        blank=True
+    )
     class Meta:
         unique_together = ('assignment', 'student',)
     def save(self, *args, **kwargs):
