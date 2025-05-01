@@ -11,7 +11,7 @@ migrate:
 mig:
 	make migration && make migrate
 cru:
-	python3 manage.py createsuperuser --username=dalikuziev --email=dalikuziev@gmail.com
+	python3 manage.py createsuperuser --username=admin2 --email=admin@gmail.com
 run-asgi:
 	uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload
 clear:
