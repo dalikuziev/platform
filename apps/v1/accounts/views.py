@@ -15,10 +15,6 @@ from .serializers import UserRegisterSerializer, UserProfileSerializer, CustomTo
 
 User = get_user_model()
 
-class RegisterView(generics.CreateAPIView):
-    serializer_class = UserRegisterSerializer
-    permission_classes = (IsAdmin,)
-
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
