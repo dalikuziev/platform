@@ -1,0 +1,185 @@
+[1mdiff --git a/apps/v1/groups/admin.py b/apps/v1/groups/admin.py[m
+[1mindex 144cd048..2d0dc807 100644[m
+[1m--- a/apps/v1/groups/admin.py[m
+[1m+++ b/apps/v1/groups/admin.py[m
+[36m@@ -4,7 +4,7 @@[m [mfrom django.contrib.auth import get_user_model[m
+ from import_export import resources[m
+ from import_export.admin import ImportExportModelAdmin[m
+ from apps.v1.shared.admin import BaseAdmin[m
+[31m-from .models import StudentGroup, WeekDay[m
+[32m+[m[32mfrom .models import StudentGroup[m
+ [m
+ User = get_user_model()[m
+ [m
+[36m@@ -23,14 +23,6 @@[m [mclass StudentGroupResource(resources.ModelResource):[m
+     class Meta:[m
+         model = StudentGroup[m
+ [m
+[31m-class WeekDayResource(resources.ModelResource):[m
+[31m-    class Meta:[m
+[31m-        model = WeekDay[m
+[31m-[m
+[31m-@admin.register(WeekDay)[m
+[31m-class WeekDayAdmin(admin.ModelAdmin):[m
+[31m-    resource_classes = [WeekDayResource][m
+[31m-[m
+ @admin.register(StudentGroup)[m
+ class StudentGroupAdmin(ImportExportModelAdmin, BaseAdmin):[m
+     list_display = [f.name for f in StudentGroup._meta.fields if f.name != 'students'] + ['students_list', 'students_count'][m
+[1mdiff --git a/apps/v1/groups/models/__init__.py b/apps/v1/groups/models/__init__.py[m
+[1mindex 3edb3afd..8c4a204e 100644[m
+[1m--- a/apps/v1/groups/models/__init__.py[m
+[1m+++ b/apps/v1/groups/models/__init__.py[m
+[36m@@ -1 +1 @@[m
+[31m-from .studentgroup import StudentGroup, WeekDay[m
+\ No newline at end of file[m
+[32m+[m[32mfrom .studentgroup import StudentGroup[m
+\ No newline at end of file[m
+[1mdiff --git a/apps/v1/groups/models/studentgroup.py b/apps/v1/groups/models/studentgroup.py[m
+[1mindex a5ed4f52..896fb4bc 100644[m
+[1m--- a/apps/v1/groups/models/studentgroup.py[m
+[1m+++ b/apps/v1/groups/models/studentgroup.py[m
+[36m@@ -1,4 +1,5 @@[m
+ from django.contrib.auth import get_user_model[m
+[32m+[m[32mfrom django.contrib.postgres.fields import ArrayField[m
+ from django.db import models[m
+ from django_extensions.db.models import TimeStampedModel[m
+ from apps.v1.courses.models import Course[m
+[36m@@ -6,8 +7,18 @@[m [mfrom apps.v1.shared.validators import clean_future_date, clean_past_date[m
+ [m
+ User = get_user_model()[m
+ [m
+[31m-class WeekDay(TimeStampedModel):[m
+[31m-    DAY_CHOICES = ([m
+[32m+[m[32m# class WeekDay(TimeStampedModel):[m
+[32m+[m[32m#[m
+[32m+[m[32m#     day = models.CharField([m
+[32m+[m[32m#         max_length=30,[m
+[32m+[m[32m#         choices=DAY_CHOICES,[m
+[32m+[m[32m#         unique=True[m
+[32m+[m[32m#     )[m
+[32m+[m[32m#     def __str__(self):[m
+[32m+[m[32m#         return self.day[m
+[32m+[m
+[32m+[m[32mclass StudentGroup(TimeStampedModel):[m
+[32m+[m[32m    WEEK_DAYS = ([m
+         ('Monday', 'Monday'),[m
+         ('Tuesday', 'Tuesday'),[m
+         ('Wednesday', 'Wednesday'),[m
+[36m@@ -16,15 +27,6 @@[m [mclass WeekDay(TimeStampedModel):[m
+         ('Saturday', 'Saturday'),[m
+         ('Sunday', 'Sunday'),[m
+     )[m
+[31m-    day = models.CharField([m
+[31m-        max_length=30,[m
+[31m-        choices=DAY_CHOICES,[m
+[31m-        unique=True[m
+[31m-    )[m
+[31m-    def __str__(self):[m
+[31m-        return self.day[m
+[31m-[m
+[31m-class StudentGroup(TimeStampedModel):[m
+     name = models.CharField([m
+         max_length=255[m
+     )[m
+[36m@@ -52,9 +54,14 @@[m [mclass StudentGroup(TimeStampedModel):[m
+     start_date = models.DateField([m
+         validators=[clean_future_date][m
+     )[m
+[31m-    lesson_days = models.ManyToManyField([m
+[31m-        WeekDay,[m
+[31m-        blank=True[m
+[32m+[m[32m    # lesson_days = models.ManyToManyField([m
+[32m+[m[32m    #     WeekDay,[m
+[32m+[m[32m    #     blank=True[m
+[32m+[m[32m    # )[m
+[32m+[m[32m    lesson_days = ArrayField([m
+[32m+[m[32m        base_field=models.CharField(max_length=9, choices=WEEK_DAYS),[m
+[32m+[m[32m        blank=True,[m
+[32m+[m[32m        default=list[m
+     )[m
+     lesson_start_time = models.TimeField([m
+         default='14:00'[m
+[1mdiff --git a/config/config.py b/config/config.py[m
+[1mindex c2ca273c..a1fb9840 100644[m
+[1m--- a/config/config.py[m
+[1m+++ b/config/config.py[m
+[36m@@ -20,7 +20,8 @@[m [menv.read_env(env_file_path)[m
+ # Use environment variables[m
+ SECRET_KEY = env.str('SECRET_KEY')[m
+ DEBUG = env.bool('DEBUG')[m
+[31m-ADMIN_URL = env.str('ADMIN_URL', default='admin/')[m
+[32m+[m[32mADMIN_URL = env.str('ADMIN_URL', default='secret/')[m
+[32m+[m[32mFAKE_ADMIN_URL = env.str('FAKE_ADMIN_URL', default='admin/')[m
+ SWAGGER_URL = env.str('SWAGGER_URL', default='swagger/')[m
+ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")[m
+ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")[m
+[1mdiff --git a/config/settings.py b/config/settings.py[m
+[1mindex 61ea5aaa..0b1bb4fc 100644[m
+[1m--- a/config/settings.py[m
+[1m+++ b/config/settings.py[m
+[36m@@ -47,6 +47,7 @@[m [mTHIRD_APPS = {[m
+     'debug_toolbar',[m
+     'drf_spectacular',[m
+     'drf_spectacular_sidecar',[m
+[32m+[m[32m    'admin_honeypot',[m
+ }[m
+ [m
+ LOCAL_APPS = [[m
+[36m@@ -97,10 +98,20 @@[m [mASGI_APPLICATION = "config.asgi.application"[m
+ # Database[m
+ # https://docs.djangoproject.com/en/5.2/ref/settings/#databases[m
+ [m
+[32m+[m[32m# DATABASES = {[m
+[32m+[m[32m#     'default': {[m
+[32m+[m[32m#         'ENGINE': 'django.db.backends.sqlite3',[m
+[32m+[m[32m#         'NAME': BASE_DIR / 'db.sqlite3',[m
+[32m+[m[32m#     }[m
+[32m+[m[32m# }[m
+ DATABASES = {[m
+[31m-    'default': {[m
+[31m-        'ENGINE': 'django.db.backends.sqlite3',[m
+[31m-        'NAME': BASE_DIR / 'db.sqlite3',[m
+[32m+[m[32m    "default": {[m
+[32m+[m[32m        "ENGINE": "django.db.backends.postgresql",[m
+[32m+[m[32m        "NAME": "madadme",[m
+[32m+[m[32m        "USER": "postgres",[m
+[32m+[m[32m        "PASSWORD": "admin",[m
+[32m+[m[32m        "HOST": "127.0.0.1",[m
+[32m+[m[32m        "PORT": "5432",[m
+     }[m
+ }[m
+ [m
+[1mdiff --git a/config/urls.py b/config/urls.py[m
+[1mindex 2d8daee9..425738dc 100644[m
+[1m--- a/config/urls.py[m
+[1m+++ b/config/urls.py[m
+[36m@@ -1,12 +1,13 @@[m
+ from django.conf.urls.static import static[m
+ from django.contrib import admin[m
+ from django.urls import path, include[m
+[31m-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView[m
+[31m-from config.config import ADMIN_URL, API_V1_URL, SWAGGER_URL[m
+[32m+[m[32mfrom drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView[m
+[32m+[m[32mfrom config.config import ADMIN_URL, API_V1_URL, SWAGGER_URL, FAKE_ADMIN_URL[m
+ from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT[m
+ [m
+ urlpatterns = [[m
+     path(ADMIN_URL, admin.site.urls),[m
+[32m+[m[32m    path(FAKE_ADMIN_URL, include('admin_honeypot.urls', namespace='admin_honeypot')),[m
+     path("__debug__/", include("debug_toolbar.urls")),[m
+ ][m
+ [m
+[1mdiff --git a/requirements.txt b/requirements.txt[m
+[1mindex e7eb79bc..18e49ae9 100644[m
+[1m--- a/requirements.txt[m
+[1m+++ b/requirements.txt[m
+[36m@@ -23,4 +23,5 @@[m [muvicorn[m
+ whitenoise[m
+ gunicorn[m
+ django-debug-toolbar[m
+[31m-djangorestframework-role-filters[m
+\ No newline at end of file[m
+[32m+[m[32mdjangorestframework-role-filters[m
+[32m+[m[32mdjango-admin-honeypot-updated-2021[m
+\ No newline at end of file[m
