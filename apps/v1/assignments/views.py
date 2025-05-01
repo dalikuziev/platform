@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from apps.v1.groups.permissions import IsEnrolledStudent, IsGroupTeacher
 from .models import Assignment, Grade
 from .serializers import AssignmentSerializer, SubmissionSerializer, GradeSerializer
-from ..accounts.permissions import IsTeacher, IsTeacherAndCourseOwner
+from ..accounts.permissions import IsTeacher, IsTeacherAndCourseOwner, IsStudent
 from ..courses.permissions import IsCourseOwner
 from .models import Submission
 
@@ -90,10 +90,19 @@ class GradeCreateUpdateView(generics.CreateAPIView, generics.UpdateAPIView):
         )
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class StudentGradesView(generics.ListAPIView):
+# class StudentGradesView(generics.ListAPIView):
+#     serializer_class = GradeSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#     def get_queryset(self):
+#         return Grade.objects.filter(
+#             submission__student=self.request.user
+#         ).select_related('submission', 'submission__assignment')
+class GradeStudentsCreateView(generics.CreateAPIView):
     serializer_class = GradeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsTeacher]
+
+class GradeStudentsListView(generics.ListAPIView):
+    serializer_class = GradeSerializer
+    permission_classes = [IsStudent]
     def get_queryset(self):
-        return Grade.objects.filter(
-            submission__student=self.request.user
-        ).select_related('submission', 'submission__assignment')
+        return Grade.objects.filter(submission__student=self.request.user)

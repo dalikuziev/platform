@@ -10,8 +10,9 @@ class Lesson(TimeStampedModel, DraftModel):
         related_name='lessons',
     )
     title = models.CharField(max_length=200)
-    content = models.TextField()
+    content = models.TextField(null=True, blank=True)
     video_url = models.URLField(blank=True, null=True)
+    is_exam = models.BooleanField(default=False)
     class Meta:
         unique_together = ('course', 'title')
 

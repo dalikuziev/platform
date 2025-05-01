@@ -3,7 +3,8 @@ from .views import (
     AssignmentListCreateView,
     SubmissionCreateView,
     GradeCreateUpdateView,
-    StudentGradesView
+    GradeStudentsCreateView,
+    GradeStudentsListView,
 )
 
 urlpatterns = [
@@ -13,6 +14,8 @@ urlpatterns = [
          SubmissionCreateView.as_view(), name='submission-create'),
     path('submissions/<int:submission_id>/grade/',
          GradeCreateUpdateView.as_view(), name='grade-submission'),
-    # path('my/grades',
-    #      StudentGradesView.as_view(), name='student-grades'),
+    path('my-grades/',
+         GradeStudentsListView.as_view(), name='student-grades'),
+    path('grades/',
+         GradeStudentsCreateView.as_view(), name='grades'),
 ]

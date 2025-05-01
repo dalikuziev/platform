@@ -18,7 +18,7 @@ class Submission(TimeStampedModel):
         related_name='submissions'
     )
     file = models.FileField(upload_to='submissions/%Y/%m/%d/')
-    answer = models.TextField()
+    answer = models.TextField(null=True, blank=True)
     class Meta:
         unique_together = ('assignment', 'student',)
     def save(self, *args, **kwargs):
