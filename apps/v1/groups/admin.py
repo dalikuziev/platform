@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from apps.v1.shared.admin import BaseAdmin
+from apps.v1.shared.base_admin import BaseAdmin
 from .models import StudentGroup, WeekDay
 
 User = get_user_model()

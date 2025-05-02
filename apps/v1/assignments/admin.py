@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django import forms
 from django.contrib.auth import get_user_model
+from icecream import ic
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from apps.v1.shared.admin import BaseAdmin
+from apps.v1.shared.base_admin import BaseAdmin
 from .models import Assignment, Submission, Grade
 
 User = get_user_model()
@@ -50,13 +51,21 @@ class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
     search_fields = ('title', 'lesson__title')
     inlines = [SubmissionInline]
 
-@admin.register(Submission)
+# @admin.register(Submission)
 class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [SubmissionResource]
     list_display = [f.name for f in Submission._meta.fields]
-    list_filter = ('assignment__lesson__course',)
-    search_fields = ('student__username', 'assignment__title')
-    inlines = [GradeInline]
+    # list_filter = ('assignment__lesson__course',)
+    # search_fields = ('student__username', 'assignment__title')
+    # inlines = [GradeInline]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "student":
+            ic(db_field.name)
+            ic(request.user)
+            ic(Submission.objects.filter(student=request.user))
+            kwargs["queryset"] = Submission.objects.filter(student=request.user)
+        # return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(Grade)
 class GradeAdmin(BaseAdmin, ImportExportModelAdmin):

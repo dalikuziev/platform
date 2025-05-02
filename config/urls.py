@@ -2,12 +2,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+from apps.v1.shared.admin import teacher_site, parent_site, student_site, admin_site
 from config.config import ADMIN_URL, API_V1_URL, SWAGGER_URL, FAKE_ADMIN_URL
 from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path(ADMIN_URL, admin.site.urls),
     path(FAKE_ADMIN_URL, include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('teacher-panel/', teacher_site.urls),
+    path('parent-panel/', parent_site.urls),
+    path('student-panel/', student_site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 
