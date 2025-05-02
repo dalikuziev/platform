@@ -41,10 +41,12 @@ class IndividualTask(TimeStampedModel):
         blank=True
     )
     deadline = models.DateTimeField(
-        validators=[clean_past_date]
+        validators=[clean_past_date],
+        null=True,
+        blank=True
     )
     class Meta:
         ordering = ['-created']
         unique_together = ['group', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
     def __str__(self):
-        return f"{self.title} - {self.student.username}"
+        return f"{self.title} - {self.students}"
