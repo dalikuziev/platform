@@ -12,7 +12,8 @@ from .models import Submission
 
 class AssignmentListCreateView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
-    permission_classes = [IsAuthenticated, IsTeacherAndCourseOwner]
+    # permission_classes = [IsAuthenticated, IsTeacherAndCourseOwner]
+    permission_classes = [IsAuthenticated, IsTeacher]
     def get_queryset(self):
         ic(self.kwargs)
         lesson_id = self.kwargs['lesson_id']

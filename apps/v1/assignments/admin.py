@@ -51,7 +51,7 @@ class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
     search_fields = ('title', 'lesson__title')
     inlines = [SubmissionInline]
 
-# @admin.register(Submission)
+@admin.register(Submission)
 class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [SubmissionResource]
     list_display = [f.name for f in Submission._meta.fields]

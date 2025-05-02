@@ -8,7 +8,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('lessons/<int:lesson_id>/assignments/',
+    path('lessons/assignments/',
          AssignmentListCreateView.as_view(), name='assignment-list'),
     path('<int:assignment_id>/submit/',
          SubmissionCreateView.as_view(), name='submission-create'),
