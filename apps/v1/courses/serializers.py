@@ -10,26 +10,34 @@ class LessonAttachmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['created']
 
-class LessonSerializer(serializers.ModelSerializer):
-    attachments = LessonAttachmentSerializer(many=True, read_only=True)
-    class Meta:
-        model = Lesson
-        fields = '__all__'
-        read_only_fields = ['created']
-
 class CourseSerializer(serializers.ModelSerializer):
-    def validate_title(self, value):
-        if not value.strip():
-            raise serializers.ValidationError("Sarlavha bo'sh bo'lishi mumkin emas")
-        return value
-    def validate_price(self, value):
-        if value < 0:
-            raise serializers.ValidationError("Narh manfiy bo'lishi mumkin emas")
-        return value
     class Meta:
         model = Course
         fields = '__all__'
-        read_only_fields = ['owner']
+# class CourseSerializer(serializers.ModelSerializer):
+#     def validate_title(self, value):
+#         if not value.strip():
+#             raise serializers.ValidationError("Sarlavha bo'sh bo'lishi mumkin emas")
+#         return value
+#     def validate_price(self, value):
+#         if value < 0:
+#             raise serializers.ValidationError("Narh manfiy bo'lishi mumkin emas")
+#         return value
+#     class Meta:
+#         model = Course
+#         fields = '__all__'
+#         read_only_fields = ['owner']
+
+class LessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+# class LessonSerializer(serializers.ModelSerializer):
+#     attachments = LessonAttachmentSerializer(many=True, read_only=True)
+#     class Meta:
+#         model = Lesson
+#         fields = '__all__'
+#         read_only_fields = ['created']
 
 class IndividualTaskSerializer(serializers.ModelSerializer):
     class Meta:
