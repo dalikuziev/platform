@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
@@ -7,6 +8,9 @@ from apps.v1.shared.admin import BaseAdmin
 from .models import User
 from django.contrib.auth.models import Group
 from django.contrib.admin import SimpleListFilter
+
+from .models.teacher import Teacher
+
 
 class UserResource(resources.ModelResource):
     class Meta:
@@ -76,3 +80,24 @@ class ActiveUserFilter(SimpleListFilter):
             return queryset.filter(is_active=False)
 
 list_filter = (ActiveUserFilter, 'role', 'is_staff')
+
+class TeacherResource(resources.ModelResource):
+    class Meta:
+        model = Teacher
+
+class TeacherAdminForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Limit to teachers
+        self.fields['user'].queryset = User.objects.filter(role='teacher')
+
+class TeacherAdmin(ImportExportModelAdmin, BaseAdmin):
+    resource_class = TeacherResource
+    form = TeacherAdminForm
+    list_display = [f.name for f in Teacher._meta.fields]
+
+admin.site.register(Teacher, TeacherAdmin)
