@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from apps.v1.shared.admin import BaseAdmin
-from .models import StudentGroup, WeekDay
+from .models import StudentGroup, WeekDay, Attendance
 
 User = get_user_model()
 
@@ -53,3 +53,11 @@ class StudentGroupAdmin(ImportExportModelAdmin, BaseAdmin):
                 kwargs2['request'] = request
                 return form(*args, **kwargs2)
         return RequestForm
+
+class AttendanceResource(resources.ModelResource):
+    class Meta:
+        model = Attendance
+
+@admin.register(Attendance)
+class AttendanceAdmin(admin.ModelAdmin):
+    resource_classes = [AttendanceResource]

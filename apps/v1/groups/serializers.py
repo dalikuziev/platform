@@ -18,3 +18,12 @@ class StudentGroupSerializer(serializers.ModelSerializer):
         return result
     def get_students_count(self, obj):
         return obj.students.count()
+
+class AttendanceInputSerializer(serializers.Serializer):
+    student_id = serializers.IntegerField()
+    is_attended = serializers.BooleanField()
+
+class AttendanceBulkUpdateSerializer(serializers.Serializer):
+    lesson_id = serializers.IntegerField()
+    group_id = serializers.IntegerField()
+    attendances = AttendanceInputSerializer(many=True)

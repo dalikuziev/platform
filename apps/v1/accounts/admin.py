@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from apps.v1.shared.admin import BaseAdmin
-from .models import User
+from .models import User, Student
 from django.contrib.auth.models import Group
 from django.contrib.admin import SimpleListFilter
 from .models.teacher import Teacher
@@ -98,3 +98,24 @@ class TeacherAdmin(ImportExportModelAdmin, BaseAdmin):
     list_display = [f.name for f in Teacher._meta.fields]
 
 admin.site.register(Teacher, TeacherAdmin)
+
+class StudentResource(resources.ModelResource):
+    class Meta:
+        model = Student
+
+class StudentAdminForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Limit to teachers
+        self.fields['user'].queryset = User.objects.filter(role='student')
+
+class StudentAdmin(ImportExportModelAdmin, BaseAdmin):
+    resource_class = StudentResource
+    form = StudentAdminForm
+    list_display = [f.name for f in Student._meta.fields]
+
+admin.site.register(Student, StudentAdmin)

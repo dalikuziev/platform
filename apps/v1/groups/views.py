@@ -1,13 +1,15 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, generics, permissions, status
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import StudentGroup
+from .models import StudentGroup, Attendance
 from .permissions import IsEnrolledStudent
-from .serializers import StudentGroupSerializer
+from .serializers import StudentGroupSerializer, AttendanceBulkUpdateSerializer
 from ..accounts.permissions import IsTeacherOrAdmin
+from ..courses.models import Lesson
 
 User = get_user_model()
 
@@ -46,3 +48,27 @@ class EnrollGroupView(APIView):
             {'status': 'success', 'message': 'Student guruhga muvaffaqiyatli qo‘shildi'},
             status=status.HTTP_200_OK
         )
+
+class AttendanceBulkUpdateView(generics.GenericAPIView):
+    serializer_class = AttendanceBulkUpdateSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        lesson_id = serializer.validated_data['lesson_id']
+        group_id = serializer.validated_data['group_id']
+        attendances_data = serializer.validated_data['attendances']
+
+        group = get_object_or_404(StudentGroup, id=group_id)
+        lesson = get_object_or_404(Lesson, id=lesson_id)
+
+        for item in attendances_data:
+            Attendance.objects.update_or_create(
+                lesson=lesson,
+                group=group,
+                student_id=item['student_id'],
+                defaults={'is_attended': item['is_attended']}
+            )
+
+        return Response({"detail": "Attendance updated successfully."}, status=status.HTTP_200_OK)
