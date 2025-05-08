@@ -8,9 +8,7 @@ from apps.v1.shared.admin import BaseAdmin
 from .models import User
 from django.contrib.auth.models import Group
 from django.contrib.admin import SimpleListFilter
-
 from .models.teacher import Teacher
-
 
 class UserResource(resources.ModelResource):
     class Meta:
@@ -29,7 +27,7 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
         (None, {'fields': ('username', 'password')}),
         (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name', 'birth_date')}),
         (_('Permissions'), {
-            'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
@@ -37,8 +35,7 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date',
-                       'role'),
+            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role'),
         }),
     )
     # Custom actions

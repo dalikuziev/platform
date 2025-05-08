@@ -12,6 +12,7 @@ urlpatterns = [
 ]
 
 api_urls = [
+    path(API_V1_URL+'api-auth/', include('rest_framework.urls')),
     path(API_V1_URL+'auth/', include('apps.v1.accounts.urls')),
     path(API_V1_URL+'courses/', include('apps.v1.courses.urls')),
     path(API_V1_URL+'assignments/', include('apps.v1.assignments.urls')),

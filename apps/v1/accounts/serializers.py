@@ -9,11 +9,7 @@ User = get_user_model()
 class UserSerializer(BaseCleanSerializer):
     class Meta:
         model = User
-        # exclude = ['password']
-        # fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone')
-        # fields = '__all__'
         exclude = ('password', 'groups', 'user_permissions', 'is_staff', 'is_superuser')
-        read_only_fields = ['role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """JWT tokeniga qo'shimcha maydonlar (role) qo'shish"""
@@ -45,7 +41,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        # exclude = ['password']
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'phone', 'date_joined')
         read_only_fields = ('role',)
         extra_kwargs = {
