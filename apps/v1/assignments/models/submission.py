@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from .assignment import Assignment
+from ...accounts.models import Student
 
 User = get_user_model()
 
@@ -12,11 +13,8 @@ class Submission(TimeStampedModel):
         related_name='submissions'
     )
     student = models.ForeignKey(
-        User,
+        Student,
         on_delete=models.CASCADE,
-        limit_choices_to={
-            'role': 'student'
-        },
         related_name='submissions'
     )
     file = models.FileField(

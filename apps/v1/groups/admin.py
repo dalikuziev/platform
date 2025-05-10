@@ -61,3 +61,4 @@ class AttendanceResource(resources.ModelResource):
 @admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):
     resource_classes = [AttendanceResource]
+    list_display = [f.name for f in Attendance._meta.fields]

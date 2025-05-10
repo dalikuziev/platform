@@ -1,14 +1,13 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from apps.v1.accounts.models import User
+from apps.v1.accounts.models import User, Student
 from apps.v1.courses.models import Course
 
 class StudentReport(TimeStampedModel):
     student = models.ForeignKey(
-        User,
+        Student,
         on_delete=models.CASCADE,
-        limit_choices_to={'role': 'student'},
         related_name='reports'
     )
     course = models.ForeignKey(

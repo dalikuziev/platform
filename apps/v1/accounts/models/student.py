@@ -6,3 +6,6 @@ User = get_user_model()
 
 class Student(TimeStampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.first_name} ({self.user.username})'

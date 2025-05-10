@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
+from icecream import ic
 from rest_framework import viewsets, filters, generics, permissions, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -8,6 +10,7 @@ from rest_framework.views import APIView
 from .models import StudentGroup, Attendance
 from .permissions import IsEnrolledStudent
 from .serializers import StudentGroupSerializer, AttendanceBulkUpdateSerializer
+from ..accounts.models import Student
 from ..accounts.permissions import IsTeacherOrAdmin
 from ..courses.models import Lesson
 
@@ -63,12 +66,30 @@ class AttendanceBulkUpdateView(generics.GenericAPIView):
         group = get_object_or_404(StudentGroup, id=group_id)
         lesson = get_object_or_404(Lesson, id=lesson_id)
 
-        for item in attendances_data:
-            Attendance.objects.update_or_create(
-                lesson=lesson,
-                group=group,
-                student_id=item['student_id'],
-                defaults={'is_attended': item['is_attended']}
-            )
+        students = group.students.all()
+        students = list(student.id for student in students)
+        length = len(attendances_data)
+        ic(lesson_id, group_id, attendances_data, group, lesson)
+        ic(students, length)
 
+        for item in attendances_data:
+            student = get_object_or_404(Student, id=item['student_id'])
+            ic(student.user.id, type(student.user.id))
+            is_student = group.students.filter(id=student.user.id).exists()
+            ic(student, is_student)
+            if is_student:
+                ic('palakat')
+                Attendance.objects.update_or_create(
+                    lesson=lesson,
+                    group=group,
+                    student=student,
+                    defaults={'is_attended': item['is_attended']}
+                )
+                ic(student.id)
+                students.remove(student.user.id)
+                ic(students)
+                ic('palakat2')
+            else:
+                raise ValidationError(detail='Student qalesan')
+        ic(length, students)
         return Response({"detail": "Attendance updated successfully."}, status=status.HTTP_200_OK)

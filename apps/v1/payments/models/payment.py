@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
+
+from apps.v1.accounts.models import Student
 from apps.v1.shared.validators import clean_future_date
 
 User = get_user_model()
@@ -13,12 +15,9 @@ class Payment(TimeStampedModel):
         ('cash', 'Cash'),
     ]
     student = models.ForeignKey(
-        User,
+        Student,
         on_delete=models.CASCADE,
-        related_name='payments',
-        limit_choices_to={
-            'role': 'student'
-        }
+        related_name='payments'
     )
     amount = models.DecimalField(
         max_digits=10,

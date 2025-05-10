@@ -5,7 +5,9 @@ from django.utils.translation import gettext_lazy as _
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from apps.v1.shared.admin import BaseAdmin
-from .models import User, Student
+# from .models import User, Student
+from apps.v1.accounts.models.user import User
+from apps.v1.accounts.models.student import Student
 from django.contrib.auth.models import Group
 from django.contrib.admin import SimpleListFilter
 from .models.teacher import Teacher
@@ -13,6 +15,15 @@ from .models.teacher import Teacher
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
+
+fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name', 'birth_date')}),
+        (_('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+        }),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+)
 
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
@@ -23,14 +34,7 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     search_fields = ('username', 'email', 'phone')
     ordering = ('-date_joined', 'birth_date')
     # Foydalanuvchini tahrirlash formasi
-    fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name', 'birth_date')}),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-        }),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-    )
+    fieldsets = fieldsets
     # Yangi foydalanuvchi qo'shish formasi
     add_fieldsets = (
         (None, {
@@ -117,5 +121,6 @@ class StudentAdmin(ImportExportModelAdmin, BaseAdmin):
     resource_class = StudentResource
     form = StudentAdminForm
     list_display = [f.name for f in Student._meta.fields]
+    list_display_links = [f.name for f in Student._meta.fields]
 
 admin.site.register(Student, StudentAdmin)
