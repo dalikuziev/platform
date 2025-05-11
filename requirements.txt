@@ -24,4 +24,4 @@ whitenoise
 gunicorn
 django-debug-toolbar
 djangorestframework-role-filters
-django-admin-honeypot
+django-admin-honeypot-updated-2021
