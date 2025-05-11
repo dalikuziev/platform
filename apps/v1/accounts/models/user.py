@@ -3,12 +3,15 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 
+from apps.v1.accounts.managers import UserManager
+
 phone_regex = RegexValidator(
     regex=r'^\+998\d{9}$',
     message="Telefon raqam quyidagi formatda bo'lishi kerak: '+998XXXXXXXXX' (masalan, +998901234567)."
 )
 
 class User(AbstractUser):
+    objects = UserManager()
     ROLES = (
         ('teacher', 'Teacher'),
         ('student', 'Student'),
@@ -17,7 +20,7 @@ class User(AbstractUser):
     )
     role = models.CharField(
         max_length=20,
-        choices=ROLES
+        choices=ROLES,
     )
     phone = models.CharField(
         validators=[phone_regex],
