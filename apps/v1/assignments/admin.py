@@ -1,8 +1,12 @@
 from django.contrib import admin
+from django import forms
+from django.contrib.auth import get_user_model
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from apps.v1.shared.admin import BaseAdmin
 from .models import Assignment, Submission, Grade
+
+User = get_user_model()
 
 class SubmissionInline(admin.TabularInline):
     model = Submission
@@ -27,6 +31,17 @@ class GradeResource(resources.ModelResource):
     class Meta:
         model = Grade
 
+class GradeAdminForm(forms.ModelForm):
+    class Meta:
+        model = Grade
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Limit to teachers
+        self.fields['graded_by'].queryset = User.objects.filter(role='teacher')
+        self.fields['graded_by'].required = True
+
 @admin.register(Assignment)
 class AssignmentAdmin(BaseAdmin, ImportExportModelAdmin):
     resource_classes = [AssignmentResource]
@@ -45,6 +60,7 @@ class SubmissionAdmin(BaseAdmin, ImportExportModelAdmin):
 
 @admin.register(Grade)
 class GradeAdmin(BaseAdmin, ImportExportModelAdmin):
+    form = GradeAdminForm
     resource_classes = [GradeResource]
     list_display = [f.name for f in Grade._meta.fields]
     list_filter = ('graded_by', 'submission__assignment__lesson__course')

@@ -1,1 +1,2 @@
-from .studentgroup import StudentGroup
+from .studentgroup import StudentGroup, WeekDay
+from .attendance import Attendance

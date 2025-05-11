@@ -1,16 +1,18 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
-from config.config import ADMIN_URL, API_V1_URL, SWAGGER_URL
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from config.config import ADMIN_URL, API_V1_URL, SWAGGER_URL, FAKE_ADMIN_URL
 from config.settings import STATIC_URL, STATIC_ROOT, MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path(ADMIN_URL, admin.site.urls),
+    path(FAKE_ADMIN_URL, include('admin_honeypot.urls', namespace='admin_honeypot')),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 api_urls = [
+    path(API_V1_URL+'api-auth/', include('rest_framework.urls')),
     path(API_V1_URL+'auth/', include('apps.v1.accounts.urls')),
     path(API_V1_URL+'courses/', include('apps.v1.courses.urls')),
     path(API_V1_URL+'assignments/', include('apps.v1.assignments.urls')),

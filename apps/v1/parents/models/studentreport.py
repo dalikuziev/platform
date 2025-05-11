@@ -1,14 +1,13 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
-from apps.v1.accounts.models import User
+from apps.v1.accounts.models import User, Student
 from apps.v1.courses.models import Course
 
 class StudentReport(TimeStampedModel):
     student = models.ForeignKey(
-        User,
+        Student,
         on_delete=models.CASCADE,
-        limit_choices_to={'role': 'student'},
         related_name='reports'
     )
     course = models.ForeignKey(
@@ -23,8 +22,13 @@ class StudentReport(TimeStampedModel):
     )
     completed_assignments = models.PositiveIntegerField()
     total_assignments = models.PositiveIntegerField()
-    teacher_comments = models.TextField(blank=True)
-    is_published = models.BooleanField(default=False)
+    teacher_comments = models.TextField(
+        null=True,
+        blank=True
+    )
+    is_published = models.BooleanField(
+        default=False
+    )
     class Meta:
         unique_together = ('student', 'course')
         ordering = ['-created']

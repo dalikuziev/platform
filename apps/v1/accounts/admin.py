@@ -1,16 +1,29 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from apps.v1.shared.admin import BaseAdmin
-from .models import User
+# from .models import User, Student
+from apps.v1.accounts.models.user import User
+from apps.v1.accounts.models.student import Student
 from django.contrib.auth.models import Group
 from django.contrib.admin import SimpleListFilter
+from .models.teacher import Teacher
 
 class UserResource(resources.ModelResource):
     class Meta:
         model = User
+
+fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name', 'birth_date')}),
+        (_('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+        }),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+)
 
 class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     resource_classes = [UserResource]
@@ -21,20 +34,12 @@ class CustomUserAdmin(ImportExportModelAdmin, BaseAdmin, UserAdmin):
     search_fields = ('username', 'email', 'phone')
     ordering = ('-date_joined', 'birth_date')
     # Foydalanuvchini tahrirlash formasi
-    fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal Info'), {'fields': ('email', 'phone', 'first_name', 'last_name', 'birth_date')}),
-        (_('Permissions'), {
-            'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-        }),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-    )
+    fieldsets = fieldsets
     # Yangi foydalanuvchi qo'shish formasi
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date',
-                       'role'),
+            'fields': ('username', 'password1', 'password2', 'email', 'phone', 'first_name', 'last_name', 'birth_date', 'role'),
         }),
     )
     # Custom actions
@@ -76,3 +81,46 @@ class ActiveUserFilter(SimpleListFilter):
             return queryset.filter(is_active=False)
 
 list_filter = (ActiveUserFilter, 'role', 'is_staff')
+
+class TeacherResource(resources.ModelResource):
+    class Meta:
+        model = Teacher
+
+class TeacherAdminForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Limit to teachers
+        self.fields['user'].queryset = User.objects.filter(role='teacher')
+
+class TeacherAdmin(ImportExportModelAdmin, BaseAdmin):
+    resource_class = TeacherResource
+    form = TeacherAdminForm
+    list_display = [f.name for f in Teacher._meta.fields]
+
+admin.site.register(Teacher, TeacherAdmin)
+
+class StudentResource(resources.ModelResource):
+    class Meta:
+        model = Student
+
+class StudentAdminForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Limit to teachers
+        self.fields['user'].queryset = User.objects.filter(role='student')
+
+class StudentAdmin(ImportExportModelAdmin, BaseAdmin):
+    resource_class = StudentResource
+    form = StudentAdminForm
+    list_display = [f.name for f in Student._meta.fields]
+    list_display_links = [f.name for f in Student._meta.fields]
+
+admin.site.register(Student, StudentAdmin)

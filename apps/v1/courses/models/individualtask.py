@@ -22,19 +22,31 @@ class IndividualTask(TimeStampedModel):
         User,
         on_delete=models.CASCADE,
         related_name='assigned_tasks',
-        limit_choices_to={'role': 'teacher'},
+        limit_choices_to={
+            'role': 'teacher'
+        },
     )
-    student = models.ForeignKey(
+    students = models.ManyToManyField(
         User,
-        on_delete=models.CASCADE,
+        limit_choices_to={
+            'role': 'student'
+        },
         related_name='individual_tasks',
-        limit_choices_to={'role': 'student'},
     )
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    deadline = models.DateTimeField(validators=[clean_past_date])
+    title = models.CharField(
+        max_length=255
+    )
+    description = models.TextField(
+        null=True,
+        blank=True
+    )
+    deadline = models.DateTimeField(
+        validators=[clean_past_date],
+        null=True,
+        blank=True
+    )
     class Meta:
         ordering = ['-created']
-        unique_together = ['group', 'student', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
+        unique_together = ['group', 'title']  # Bir o'quvchiga bir xil nomli topshiriq bir marta
     def __str__(self):
-        return f"{self.title} - {self.student.username}"
+        return f"{self.title} - {self.students}"

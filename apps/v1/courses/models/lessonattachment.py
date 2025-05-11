@@ -9,9 +9,16 @@ class LessonAttachment(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name='attachments',
     )
-    file = models.FileField(upload_to='lesson_attachments/')
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    file = models.FileField(
+        upload_to='lesson_attachments/'
+    )
+    title = models.CharField(
+        max_length=200
+    )
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
     def delete(self, *args, **kwargs):
         # faylni o'chiramiz
         if self.file:

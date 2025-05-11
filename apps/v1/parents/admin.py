@@ -34,7 +34,6 @@ class StudentReportAdmin(BaseAdmin, ImportExportModelAdmin):
     list_display = [f.name for f in StudentReport._meta.fields]
     list_filter = ('course', 'is_published')
     search_fields = ('student__username', 'course__title')
-    readonly_fields = ('created',)
     actions = ['publish_reports', 'unpublish_reports']
     @admin.action(description="Tanlangan hisobotlarni nashr qilish")
     def publish_reports(self, request, queryset):

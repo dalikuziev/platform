@@ -1,15 +1,11 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
+from apps.v1.courses.views import CourseViewSet, LessonViewSet, IndividualTaskViewSet
 
-from .views import (
-    LessonListCreateView,
-    IndividualTaskViewSet, CourseViewSet
-)
-router = DefaultRouter()
-router.register('individual-tasks', IndividualTaskViewSet, basename='individual-tasks')
-router.register('', CourseViewSet, basename='course')
+router = routers.SimpleRouter()
+router.register(r'', CourseViewSet, basename='course')
 
-urlpatterns = [
-    path('<int:course_id>/lessons/', LessonListCreateView.as_view(), name='lesson-list'),
-]
-urlpatterns += router.urls
+courses_router = routers.NestedSimpleRouter(router, r'', lookup='course')
+courses_router.register(r'lessons', LessonViewSet, basename='course-lessons')
+# router.register('individual-tasks', IndividualTaskViewSet, basename='individual-tasks')
+
+urlpatterns = router.urls + courses_router.urls
