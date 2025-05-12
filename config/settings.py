@@ -47,7 +47,6 @@ THIRD_APPS = {
     'debug_toolbar',
     'drf_spectacular',
     'drf_spectacular_sidecar',
-    'admin_honeypot',
 }
 
 LOCAL_APPS = [
