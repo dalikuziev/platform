@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from apps.v1.courses.models import Course
@@ -6,8 +7,18 @@ from apps.v1.shared.validators import clean_future_date, clean_past_date
 
 User = get_user_model()
 
-class WeekDay(TimeStampedModel):
-    DAY_CHOICES = (
+# class WeekDay(TimeStampedModel):
+#
+#     day = models.CharField(
+#         max_length=30,
+#         choices=DAY_CHOICES,
+#         unique=True
+#     )
+#     def __str__(self):
+#         return self.day
+
+class StudentGroup(TimeStampedModel):
+    WEEK_DAYS = (
         ('Monday', 'Monday'),
         ('Tuesday', 'Tuesday'),
         ('Wednesday', 'Wednesday'),
@@ -16,15 +27,6 @@ class WeekDay(TimeStampedModel):
         ('Saturday', 'Saturday'),
         ('Sunday', 'Sunday'),
     )
-    day = models.CharField(
-        max_length=30,
-        choices=DAY_CHOICES,
-        unique=True
-    )
-    def __str__(self):
-        return self.day
-
-class StudentGroup(TimeStampedModel):
     name = models.CharField(
         max_length=255
     )
@@ -52,9 +54,14 @@ class StudentGroup(TimeStampedModel):
     start_date = models.DateField(
         validators=[clean_future_date]
     )
-    lesson_days = models.ManyToManyField(
-        WeekDay,
-        blank=True
+    # lesson_days = models.ManyToManyField(
+    #     WeekDay,
+    #     blank=True
+    # )
+    lesson_days = ArrayField(
+        base_field=models.CharField(max_length=9, choices=WEEK_DAYS),
+        blank=True,
+        default=list
     )
     lesson_start_time = models.TimeField(
         default='14:00'
