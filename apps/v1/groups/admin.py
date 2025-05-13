@@ -28,7 +28,7 @@ class WeekDayResource(resources.ModelResource):
         model = WeekDay
 
 @admin.register(WeekDay)
-class WeekDayAdmin(admin.ModelAdmin):
+class WeekDayAdmin(ImportExportModelAdmin, BaseAdmin):
     resource_classes = [WeekDayResource]
 
 @admin.register(StudentGroup)
