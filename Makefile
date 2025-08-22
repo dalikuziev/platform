@@ -36,4 +36,4 @@ tunnel:
 collect:
 	python3 manage.py collectstatic --noinput
 open-bash:
-	docker exec -it drf_api bash
+	docker exec -it intellect_api bash

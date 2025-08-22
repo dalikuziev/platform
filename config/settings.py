@@ -46,6 +46,7 @@ THIRD_APPS = {
     'django_extensions',
     'django_filters',
     'rest_framework.authtoken',
+    'schema_viewer',
 }
 
 LOCAL_APPS = [
